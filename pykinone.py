@@ -3,8 +3,8 @@ import config
 import requests
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
-AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token";
-DEVICES_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/devices";
+AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
+DEVICES_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/devices"
 SECONDS_IN_ONE_MINUTE = 60
 MINIMUM_QUERY_SPAN = 3 * 60
 
@@ -13,8 +13,8 @@ integrationEmail = ""
 apiAccessToken = ""
 
 def run():
-    integrationToken = loadIntegrationToken()
-    apiAccessToken = initializeRestApiWithIntegrationToken()
+    loadIntegrationToken()
+    initializeRestApiWithIntegrationToken()
     running = True
     while running:
         queryRestApiForAuxSetting()
@@ -23,11 +23,11 @@ def run():
 def loadIntegrationToken():
     cfg = config.Config("pykinone.conf")
     if cfg:
+        global integrationToken
         integrationToken = cfg['integrationToken']
+        global integrationEmail
         integrationEmail = cfg['integrationEmail']
-        print("Integration token read from configuration file")
-        print("integration token: " + integrationToken)
-        print("integration email: " + integrationEmail)
+        print("Configuration file loaded...")
     else:
         print("Error loading config file")
     return
@@ -38,7 +38,11 @@ def initializeRestApiWithIntegrationToken():
         'Content-Type': 'application/json',
         'x-api-key': integrationToken
     }
-    r = requests.put(AUTH_TOKEN_ENDPOINT_URI_PATH, data={"email": integrationEmail, "integratorToken": integrationToken}, headers=headers)
+    data = {
+        'email': integrationEmail, 
+        'integratorToken': integrationToken
+    }
+    r = requests.put(AUTH_TOKEN_ENDPOINT_URI_PATH, data=data, headers=headers)
     print(r.json())
     return
 
