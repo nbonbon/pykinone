@@ -14,11 +14,20 @@ integratorEmail = ""
 apiKey = ""
 
 def run():
+    authTimeout = 0
     loadConfiguration()
-    authResponseJson = initializeRestApiWithIntegratorToken()
     running = True
+    intialized = False
     while running:
-        deviceResponseJson = getDevices(authResponseJson)
+        now = time.time()
+        if now > authTimeout:
+            authResponseJson = initializeRestApiWithIntegratorToken()
+            authTimeout = time.time() + int(authResponseJson['accessTokenExpiresIn'])
+        
+        if not intialized:
+            deviceResponseJson = getDevices(authResponseJson)
+            intialized = True
+        
         getDeviceInfo(authResponseJson, deviceResponseJson)
         time.sleep(MINIMUM_QUERY_SPAN)
 
