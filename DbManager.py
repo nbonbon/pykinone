@@ -10,6 +10,9 @@ class DbManager:
         self.con.close()
 
     def __initializeTables(self):
+        if self.__tableExists("location") is False:
+            print("Creating location table...")
+            self.__createLocationTable()
         if self.__tableExists("device") is False:
             print("Creating device table...")
             self.__createDeviceTable()
@@ -21,14 +24,23 @@ class DbManager:
         res = self.curs.execute("SELECT name FROM sqlite_master WHERE  type='table' AND name='" + tableName +"'");
         return res.fetchone() is not None
 
+    def __createLocationTable(self):
+        return self.curs.execute("""
+                CREATE TABLE location(
+                    location_name TEXT PRIMARY KEY
+                )
+            """)
+
+
     def __createDeviceTable(self):
         return self.curs.execute("""
                 CREATE TABLE device(
                     device_id INTEGER PRIMARY KEY,
-                    location_name TEXT, 
+                    location_name TEXT,
                     device_name TEXT, 
                     model TEXT, 
-                    firmware_version TEXT
+                    firmware_version TEXT,
+                    FOREIGN KEY(location_name) REFERENCES location(location_name)
                 )
             """)
 
