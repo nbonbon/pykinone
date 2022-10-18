@@ -1,7 +1,7 @@
 import time
 import config
 import requests
-import json
+from DbManager import DbManager
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
@@ -16,6 +16,7 @@ apiKey = ""
 def run():
     authTimeout = 0
     loadConfiguration()
+    dbManager = DbManager()
     running = True
     intialized = False
     while running:
@@ -30,6 +31,8 @@ def run():
         
         getDeviceInfo(authResponseJson, deviceResponseJson)
         time.sleep(MINIMUM_QUERY_SPAN)
+
+    dbManager.close()
 
 def loadConfiguration():
     cfg = config.Config("pykinone.conf")
