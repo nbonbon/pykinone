@@ -1,10 +1,12 @@
 import sqlite3
+from LocationDbUtil import LocationDbUtil
 
 class DbManager:
     def __init__(self):
         self.con = sqlite3.connect("pykinone.db")
         self.curs = self.con.cursor()
         self.__initializeTables()
+        self.locationUtil = LocationDbUtil()
     
     def close(self):
         self.con.close()
@@ -12,7 +14,7 @@ class DbManager:
     def __initializeTables(self):
         if self.__tableExists("location") is False:
             print("Creating location table...")
-            self.__createLocationTable()
+            self.locationUtil.createLocationTable(self.curs)
         if self.__tableExists("device") is False:
             print("Creating device table...")
             self.__createDeviceTable()
@@ -23,14 +25,6 @@ class DbManager:
     def __tableExists(self, tableName):
         res = self.curs.execute("SELECT name FROM sqlite_master WHERE  type='table' AND name='" + tableName +"'");
         return res.fetchone() is not None
-
-    def __createLocationTable(self):
-        return self.curs.execute("""
-                CREATE TABLE location(
-                    location_name TEXT PRIMARY KEY
-                )
-            """)
-
 
     def __createDeviceTable(self):
         return self.curs.execute("""
