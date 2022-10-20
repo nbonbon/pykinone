@@ -24,3 +24,6 @@ Run `python3 pykinone.py` in a terminal to execute the program
 
 ## Prerequesites
 - pytest
+
+## Running Unit Tests
+Execute `pytest` from the root project directory. pytest install location on your machine must be in your PATH.
