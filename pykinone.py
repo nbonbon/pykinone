@@ -1,7 +1,10 @@
 import time
 import config
+import json
 import requests
 from DbUtil.DbManager import DbManager
+from DevicesResponseUtil import DevicesResponseUtil
+from Entity.ThermostatInfo import ThermostatInfo
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
@@ -27,9 +30,12 @@ def run():
         
         if not intialized:
             deviceResponseJson = getDevices(authResponseJson)
+            locations = DevicesResponseUtil.parseDevicesResponse(json.dumps(deviceResponseJson))
             intialized = True
         
-        getDeviceInfo(authResponseJson, deviceResponseJson)
+        thermostatInfoJson = getThermostatInfo(authResponseJson, deviceResponseJson)
+        thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson))
+        print(thermInfo.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
     dbManager.close()
@@ -71,7 +77,7 @@ def getDevices(authResponseJson):
     devicesResponse = requests.get(DEVICES_URI_PATH, headers=headers)
     return devicesResponse.json()
 
-def getDeviceInfo(authResponseJson, deviceResponseJson):
+def getThermostatInfo(authResponseJson, deviceResponseJson):
     print("Getting device info...")
     deviceId = deviceResponseJson[0]['devices'][0]['id']
     headers = {
@@ -80,6 +86,6 @@ def getDeviceInfo(authResponseJson, deviceResponseJson):
         'Authorization': 'Bearer ' + authResponseJson['accessToken']
     }
     deviceInfoResponse = requests.get(DEVICES_URI_PATH + '/' + deviceId, headers=headers)
-    print(deviceInfoResponse.json())
+    return deviceInfoResponse.json()
 
 run()

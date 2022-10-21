@@ -10,3 +10,9 @@ class Location:
         for deviceJson in devicesJson:
             device = Device(json.dumps(deviceJson))
             self.devices.append(device)
+
+    def toString(self):
+        result = "Location Name: " + self.name + "\n"
+        for device in self.devices:
+            result += device.toString()
+        return result

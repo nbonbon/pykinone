@@ -7,3 +7,10 @@ class Device:
         self.name = deviceJson['name']
         self.model = deviceJson['model']
         self.firmwareVersion = deviceJson['firmwareVersion']
+
+    def toString(self):
+        result = "Device Id: " + self.id + "\n"
+        result += "Name: " + self.name + "\n"
+        result += "Model: " + self.model + "\n"
+        result += "Firmware Version: " + self.firmwareVersion + "\n"
+        return result

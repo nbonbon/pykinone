@@ -21,3 +21,24 @@ class ThermostatInfo:
         self.humOutdoor = thermostatInfoJson['humOutdoor']
         self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
         self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
+
+    def toString(self):
+        result = "Equipment Status: " + str(self.equipmentStatus) + "\n"
+        result = "Mode: " + str(self.mode) + "\n"
+        result += "Mode Limit: " + str(self.modeLimit) + "\n"
+        result += "Mode Emergency Heat Available: " + str(self.modeEmHeatAvailable) + "\n"
+        result += "Fan: " + str(self.fan) + "\n"
+        result += "Fan Circulate: " + str(self.fanCirculate) + "\n"
+        result += "Fan Circulate Speed: " + str(self.fanCirculateSpeed) + "\n"
+        result += "Heat Set Point: " + str(self.heatSetpoint) + "\n"
+        result += "Cool Set Point: " + str(self.coolSetpoint) + "\n"
+        result += "Set Point Delta: " + str(self.setpointDelta) + "\n"
+        result += "Set Point Minimum: " + str(self.setpointMinimum) + "\n"
+        result += "Set Point Maximum: " + str(self.setpointMaximum) + "\n"
+        result += "Temperature Indoor: " + str(self.tempIndoor) + "\n"
+        result += "Humidty Indoor: " + str(self.humIndoor) + "\n"
+        result += "Temperature Indoor: " + str(self.tempOutdoor) + "\n"
+        result += "Humidity Outdoor: " + str(self.humOutdoor) + "\n"
+        result += "Schedule Enabled: " + str(self.scheduleEnabled) + "\n"
+        result += "Geofencing Enabled: " + str(self.geofencingEnabled) + "\n"
+        return result
