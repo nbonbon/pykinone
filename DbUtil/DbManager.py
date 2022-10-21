@@ -2,6 +2,7 @@ import sqlite3
 from DbUtil.LocationDbUtil import LocationDbUtil
 from DbUtil.DeviceDbUtil import DeviceDbUtil
 from DbUtil.ThermostatInfoDbUtil import ThermostatInfoDbUtil
+from Entity.Location import Location
 
 class DbManager:
     def __init__(self):
@@ -29,3 +30,7 @@ class DbManager:
     def __tableExists(self, tableName):
         res = self.curs.execute("SELECT name FROM sqlite_master WHERE  type='table' AND name='" + tableName +"'");
         return res.fetchone() is not None
+
+    def save(self, object):
+        if isinstance(object, Location):
+            self.locationUtil.save(object, self.curs, self.con)

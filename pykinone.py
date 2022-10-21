@@ -31,6 +31,8 @@ def run():
         if not intialized:
             deviceResponseJson = getDevices(authResponseJson)
             locations = DevicesResponseUtil.parseDevicesResponse(json.dumps(deviceResponseJson))
+            for location in locations:
+                dbManager.save(location)
             intialized = True
         
         thermostatInfoJson = getThermostatInfo(authResponseJson, deviceResponseJson)
