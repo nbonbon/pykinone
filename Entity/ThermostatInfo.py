@@ -22,9 +22,50 @@ class ThermostatInfo:
         self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
         self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
 
+    def __eq__(self, other):
+        if not type(self) == type(other):
+            return False
+        if self.equipmentStatus != other.equipmentStatus:
+            return False
+        if self.mode != other.mode:
+            return False
+        if self.modeLimit != other.modeLimit:
+            return False 
+        if self.modeEmHeatAvailable != other.modeEmHeatAvailable:
+            return False
+        if self.fan != other.fan:
+            return False
+        if self.fanCirculate != other.fanCirculate:
+            return False
+        if self.fanCirculateSpeed != other.fanCirculateSpeed:
+            return False
+        if self.heatSetpoint != other.heatSetpoint:
+            return False
+        if self.coolSetpoint != other.coolSetpoint:
+            return False
+        if self.setpointDelta != other.setpointDelta:
+            return False
+        if self.setpointMinimum != other.setpointMinimum:
+            return False
+        if self.setpointMaximum != other.setpointMaximum:
+            return False
+        if self.tempIndoor != other.tempIndoor:
+            return False
+        if self.humIndoor != other.humIndoor:
+            return False
+        if self.tempOutdoor != other.tempOutdoor:
+            return False
+        if self.humOutdoor != other.humOutdoor:
+            return False
+        if self.scheduleEnabled != other.scheduleEnabled:
+            return False
+        if self.geofencingEnabled != other.geofencingEnabled:
+            return False
+        return True
+
     def toString(self):
         result = "Equipment Status: " + str(self.equipmentStatus) + "\n"
-        result = "Mode: " + str(self.mode) + "\n"
+        result += "Mode: " + str(self.mode) + "\n"
         result += "Mode Limit: " + str(self.modeLimit) + "\n"
         result += "Mode Emergency Heat Available: " + str(self.modeEmHeatAvailable) + "\n"
         result += "Fan: " + str(self.fan) + "\n"
