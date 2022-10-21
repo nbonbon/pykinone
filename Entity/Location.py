@@ -16,3 +16,13 @@ class Location:
         for device in self.devices:
             result += device.toString()
         return result
+
+    def __eq__(self, other):
+        if not type(self) == type(other):
+            return False
+        if self.name != other.name:
+            return False
+        for i in range(len(self.devices)):
+            if self.devices[i] != other.devices[i]:
+                return False
+        return True

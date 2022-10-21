@@ -1,8 +1,10 @@
 import os, sys
 import json
+from unittest.mock import Mock
+from Entity.Location import Location
+
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
-from Entity.Location import Location
 
 def test_oneDevice():
     testJson = {
@@ -48,3 +50,67 @@ def test_multipleDevices():
     assert len(location.devices) == 2
     assert location.devices[0].id == "id1"
     assert location.devices[1].id == "id2"
+
+def test_eq_are_equal():
+    testJson = {
+        "locationName": "locationName1",
+        "devices": 
+        [
+            {
+                "id": "id1",
+                "name": "name1",
+                "model": "model1",
+                "firmwareVersion": "firmwareVersion1"
+            },
+            {
+                "id": "id2",
+                "name": "name2",
+                "model": "model2",
+                "firmwareVersion": "firmwareVersion2"
+            },
+        ]
+    }
+    location1 = Location(json.dumps(testJson))
+    location2 = Location(json.dumps(testJson))
+    assert location1 == location2
+
+def test_eq_are_not_equal():
+    testJson1 = {
+        "locationName": "locationName1",
+        "devices": 
+        [
+            {
+                "id": "id1",
+                "name": "name1",
+                "model": "model1",
+                "firmwareVersion": "firmwareVersion1"
+            },
+            {
+                "id": "id2",
+                "name": "name2",
+                "model": "model2",
+                "firmwareVersion": "firmwareVersion2"
+            },
+        ]
+    }
+    testJson2 = {
+        "locationName": "locationName2",
+        "devices": 
+        [
+            {
+                "id": "id1",
+                "name": "name1",
+                "model": "model1",
+                "firmwareVersion": "firmwareVersion1"
+            },
+            {
+                "id": "id2",
+                "name": "name2",
+                "model": "model2",
+                "firmwareVersion": "firmwareVersion2"
+            },
+        ]
+    }
+    location1 = Location(json.dumps(testJson1))
+    location2 = Location(json.dumps(testJson2))
+    assert location1 != location2
