@@ -7,10 +7,21 @@ class LocationDbUtil:
             """)
     
     def save(self, location, curs, con):
+        if self.__locationExists(location, curs):
+            return
+        
         queryString = """
             INSERT into location VALUES
                 ("{name}")
         """.format(name=location.name)
-        print("querystr: " + queryString)
         curs.execute(queryString)
         return con.commit()
+
+    def __locationExists(self, location, curs):
+        queryString = """
+            SELECT *  FROM location WHERE location_name = 
+                ("{name}")
+        """.format(name=location.name)
+        res = curs.execute(queryString)
+        if len(res.fetchone()) > 0:
+            return True
