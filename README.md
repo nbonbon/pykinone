@@ -18,12 +18,14 @@ Note: data within `<>` above are meant to be replaced with your values (includin
 Run `python3 pykinone.py` in a terminal to execute the program 
 
 ## Prerequesites
-- Python3
+- Python 3.3+
 
 # Development
 
 ## Prerequesites
+- Python 3.3+
 - pytest
+- unittest.mock
 
 ## Running Unit Tests
 Execute `pytest` from the root project directory. pytest install location on your machine must be in your PATH.
