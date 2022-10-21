@@ -1,7 +1,7 @@
 import time
 import config
 import requests
-from DbManager import DbManager
+from DbUtil.DbManager import DbManager
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"

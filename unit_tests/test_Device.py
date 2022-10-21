@@ -2,7 +2,7 @@ import os, sys
 import json
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
-from Device import Device
+from Entity.Device import Device
 
 def test_deviceParse():
     testJson = {

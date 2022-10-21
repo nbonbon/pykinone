@@ -1,7 +1,7 @@
 import sqlite3
-from LocationDbUtil import LocationDbUtil
-from DeviceDbUtil import DeviceDbUtil
-from ThermostatInfoDbUtil import ThermostatInfoDbUtil
+from DbUtil.LocationDbUtil import LocationDbUtil
+from DbUtil.DeviceDbUtil import DeviceDbUtil
+from DbUtil.ThermostatInfoDbUtil import ThermostatInfoDbUtil
 
 class DbManager:
     def __init__(self):

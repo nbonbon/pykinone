@@ -1,8 +1,5 @@
 import json
-
-
-import json
-from Location import Location
+from Entity.Location import Location
 
 class DevicesResponseUtil:
 

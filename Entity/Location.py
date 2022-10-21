@@ -1,5 +1,5 @@
 import json
-from Device import Device
+from Entity.Device import Device
 
 class Location:
     def __init__(self, jsonStr):
