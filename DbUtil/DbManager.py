@@ -3,6 +3,7 @@ from DbUtil.LocationDbUtil import LocationDbUtil
 from DbUtil.DeviceDbUtil import DeviceDbUtil
 from DbUtil.ThermostatInfoDbUtil import ThermostatInfoDbUtil
 from Entity.Location import Location
+from Entity.ThermostatInfo import ThermostatInfo
 
 class DbManager:
     def __init__(self):
@@ -37,3 +38,5 @@ class DbManager:
             self.locationUtil.save(object, self.curs, self.con)
             for device in object.devices:
                 self.deviceUtil.save(device, object, self.curs, self.con)
+        elif isinstance(object, ThermostatInfo):
+            self.thermostateInfoUtil.save(object, self.curs, self.con)

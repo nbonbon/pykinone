@@ -1,7 +1,7 @@
 import json
 
 class ThermostatInfo:
-    def __init__(self, jsonStr):
+    def __init__(self, jsonStr, deviceId):
         thermostatInfoJson = json.loads(jsonStr)
         self.equipmentStatus = thermostatInfoJson['equipmentStatus']
         self.mode = thermostatInfoJson['mode']
@@ -21,6 +21,7 @@ class ThermostatInfo:
         self.humOutdoor = thermostatInfoJson['humOutdoor']
         self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
         self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
+        self.deviceId = deviceId
 
     def __eq__(self, other):
         if not type(self) == type(other):

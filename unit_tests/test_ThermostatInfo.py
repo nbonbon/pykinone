@@ -26,7 +26,7 @@ def test_thermostatInfoParsing():
         "geofencingEnabled": False
     }
 
-    info = ThermostatInfo(json.dumps(testJson))
+    info = ThermostatInfo(json.dumps(testJson), "0")
     assert info.equipmentStatus == 1
     assert info.mode == 2
     assert info.modeLimit == 3
@@ -68,8 +68,8 @@ def test_eq_are_equal():
         "geofencingEnabled": False
     }
 
-    info1 = ThermostatInfo(json.dumps(testJson))
-    info2 = ThermostatInfo(json.dumps(testJson))
+    info1 = ThermostatInfo(json.dumps(testJson), "0")
+    info2 = ThermostatInfo(json.dumps(testJson), "0")
     assert info1 == info2
 
 def test_eq_are_not_equal():
@@ -115,6 +115,6 @@ def test_eq_are_not_equal():
         "geofencingEnabled": False
     }
 
-    info1 = ThermostatInfo(json.dumps(testJson1))
-    info2 = ThermostatInfo(json.dumps(testJson2))
+    info1 = ThermostatInfo(json.dumps(testJson1), "0")
+    info2 = ThermostatInfo(json.dumps(testJson2), "0")
     assert info1 != info2

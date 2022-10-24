@@ -36,7 +36,9 @@ def run():
             intialized = True
         
         thermostatInfoJson = getThermostatInfo(authResponseJson, deviceResponseJson)
-        thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson))
+        deviceId = deviceResponseJson[0]['devices'][0]['id']
+        thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), deviceId)
+        dbManager.save(thermInfo)
         print(thermInfo.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
