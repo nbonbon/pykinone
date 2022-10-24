@@ -23,5 +23,8 @@ class LocationDbUtil:
                 ("{name}")
         """.format(name=location.name)
         res = curs.execute(queryString)
-        if len(res.fetchone()) > 0:
-            return True
+        if res is not None:
+            res = res.fetchone()
+            if res is not None and len(res) > 0:
+                return True
+        return False

@@ -7,6 +7,7 @@ from Entity.Location import Location
 class DbManager:
     def __init__(self):
         self.con = sqlite3.connect("pykinone.db")
+        self.con.execute("PRAGMA foreign_keys = 1")
         self.curs = self.con.cursor()
         self.__initializeTables()
     
@@ -34,3 +35,5 @@ class DbManager:
     def save(self, object):
         if isinstance(object, Location):
             self.locationUtil.save(object, self.curs, self.con)
+            for device in object.devices:
+                self.deviceUtil.save(device, object, self.curs, self.con)
