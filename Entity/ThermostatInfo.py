@@ -1,27 +1,28 @@
 import json
 
 class ThermostatInfo:
-    def __init__(self, jsonStr, deviceId):
-        thermostatInfoJson = json.loads(jsonStr)
-        self.equipmentStatus = thermostatInfoJson['equipmentStatus']
-        self.mode = thermostatInfoJson['mode']
-        self.modeLimit = thermostatInfoJson['modeLimit']
-        self.modeEmHeatAvailable = thermostatInfoJson['modeEmHeatAvailable']
-        self.fan = thermostatInfoJson['fan']
-        self.fanCirculate = thermostatInfoJson['fanCirculate']
-        self.fanCirculateSpeed = thermostatInfoJson['fanCirculateSpeed']
-        self.heatSetpoint = thermostatInfoJson['heatSetpoint']
-        self.coolSetpoint = thermostatInfoJson['coolSetpoint']
-        self.setpointDelta = thermostatInfoJson['setpointDelta']
-        self.setpointMinimum = thermostatInfoJson['setpointMinimum']
-        self.setpointMaximum = thermostatInfoJson['setpointMaximum']
-        self.tempIndoor = thermostatInfoJson['tempIndoor']
-        self.humIndoor = thermostatInfoJson['humIndoor']
-        self.tempOutdoor = thermostatInfoJson['tempOutdoor']
-        self.humOutdoor = thermostatInfoJson['humOutdoor']
-        self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
-        self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
-        self.deviceId = deviceId
+    def __init__(self, jsonStr="", deviceId=-1):
+        if jsonStr != "":
+            thermostatInfoJson = json.loads(jsonStr)
+            self.equipmentStatus = int(thermostatInfoJson['equipmentStatus'])
+            self.mode = int(thermostatInfoJson['mode'])
+            self.modeLimit = int(thermostatInfoJson['modeLimit'])
+            self.modeEmHeatAvailable = int(thermostatInfoJson['modeEmHeatAvailable'])
+            self.fan = int(thermostatInfoJson['fan'])
+            self.fanCirculate = int(thermostatInfoJson['fanCirculate'])
+            self.fanCirculateSpeed = int(thermostatInfoJson['fanCirculateSpeed'])
+            self.heatSetpoint = float(thermostatInfoJson['heatSetpoint'])
+            self.coolSetpoint = float(thermostatInfoJson['coolSetpoint'])
+            self.setpointDelta = float(thermostatInfoJson['setpointDelta'])
+            self.setpointMinimum = float(thermostatInfoJson['setpointMinimum'])
+            self.setpointMaximum = float(thermostatInfoJson['setpointMaximum'])
+            self.tempIndoor = float(thermostatInfoJson['tempIndoor'])
+            self.humIndoor = float(thermostatInfoJson['humIndoor'])
+            self.tempOutdoor = float(thermostatInfoJson['tempOutdoor'])
+            self.humOutdoor = float(thermostatInfoJson['humOutdoor'])
+            self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
+            self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
+            self.deviceId = deviceId
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -62,6 +63,8 @@ class ThermostatInfo:
             return False
         if self.geofencingEnabled != other.geofencingEnabled:
             return False
+        if self.deviceId != other.deviceId:
+            return False
         return True
 
     def toString(self):
@@ -78,8 +81,8 @@ class ThermostatInfo:
         result += "Set Point Minimum: " + str(self.setpointMinimum) + "\n"
         result += "Set Point Maximum: " + str(self.setpointMaximum) + "\n"
         result += "Temperature Indoor: " + str(self.tempIndoor) + "\n"
-        result += "Humidty Indoor: " + str(self.humIndoor) + "\n"
-        result += "Temperature Indoor: " + str(self.tempOutdoor) + "\n"
+        result += "Humidity Indoor: " + str(self.humIndoor) + "\n"
+        result += "Temperature Outdoor: " + str(self.tempOutdoor) + "\n"
         result += "Humidity Outdoor: " + str(self.humOutdoor) + "\n"
         result += "Schedule Enabled: " + str(self.scheduleEnabled) + "\n"
         result += "Geofencing Enabled: " + str(self.geofencingEnabled) + "\n"

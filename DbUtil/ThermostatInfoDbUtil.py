@@ -1,9 +1,12 @@
+from Entity.ThermostatInfo import ThermostatInfo
+
+
 class ThermostatInfoDbUtil:
     def createThermostatInfoTable(self, curs):
         return curs.execute("""
             CREATE TABLE thermostat_info(
                 timestamp DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')),
-                dev_id INTEGER,
+                dev_id TEXT,
                 equipmentStatus INTEGER,
                 mode INTEGER,
                 modeLimit INTEGER,
@@ -27,7 +30,10 @@ class ThermostatInfoDbUtil:
             )
         """)
 
-    def save(self, thermostateInfo, curs, con):
+    def save(self, thermostatInfo, curs, con):
+        if self.__hasDataUpdatedSinceLastSave(thermostatInfo, curs) == False:
+            return
+
         queryString = """
             INSERT into thermostat_info VALUES(
                 datetime(CURRENT_TIMESTAMP, 'localtime'),
@@ -51,25 +57,62 @@ class ThermostatInfoDbUtil:
                 "{scheduleEnabled}",
                 "{geofencingEnabled}"
             )
-        """.format(dev_id=thermostateInfo.deviceId, 
-                    equipmentStatus=thermostateInfo.equipmentStatus,
-                    mode=thermostateInfo.mode, 
-                    modeLimit=thermostateInfo.modeLimit, 
-                    modeEmHeatAvailable=thermostateInfo.modeEmHeatAvailable, 
-                    fan=thermostateInfo.fan, 
-                    fanCirculate=thermostateInfo.fanCirculate, 
-                    fanCirculateSpeed=thermostateInfo.fanCirculateSpeed, 
-                    heatSetpoint=thermostateInfo.heatSetpoint, 
-                    coolSetpoint=thermostateInfo.coolSetpoint, 
-                    setpointDelta=thermostateInfo.setpointDelta, 
-                    setpointMinimum=thermostateInfo.setpointMinimum, 
-                    setpointMaximum=thermostateInfo.setpointMaximum, 
-                    tempIndoor=thermostateInfo.tempIndoor, 
-                    humIndoor=thermostateInfo.humIndoor, 
-                    tempOutdoor=thermostateInfo.tempOutdoor, 
-                    humOutdoor=thermostateInfo.humOutdoor,
-                    scheduleEnabled=thermostateInfo.scheduleEnabled,
-                    geofencingEnabled=thermostateInfo.geofencingEnabled
+        """.format(dev_id=thermostatInfo.deviceId, 
+                    equipmentStatus=thermostatInfo.equipmentStatus,
+                    mode=thermostatInfo.mode, 
+                    modeLimit=thermostatInfo.modeLimit, 
+                    modeEmHeatAvailable=thermostatInfo.modeEmHeatAvailable, 
+                    fan=thermostatInfo.fan, 
+                    fanCirculate=thermostatInfo.fanCirculate, 
+                    fanCirculateSpeed=thermostatInfo.fanCirculateSpeed, 
+                    heatSetpoint=thermostatInfo.heatSetpoint, 
+                    coolSetpoint=thermostatInfo.coolSetpoint, 
+                    setpointDelta=thermostatInfo.setpointDelta, 
+                    setpointMinimum=thermostatInfo.setpointMinimum, 
+                    setpointMaximum=thermostatInfo.setpointMaximum, 
+                    tempIndoor=thermostatInfo.tempIndoor, 
+                    humIndoor=thermostatInfo.humIndoor, 
+                    tempOutdoor=thermostatInfo.tempOutdoor, 
+                    humOutdoor=thermostatInfo.humOutdoor,
+                    scheduleEnabled=(1 if thermostatInfo.scheduleEnabled == True else 0),
+                    geofencingEnabled=(1 if thermostatInfo.geofencingEnabled == True else 0)
         )
         curs.execute(queryString)
         return con.commit()
+
+    def __hasDataUpdatedSinceLastSave(self, thermostatInfo, curs):
+        queryString = """
+            SELECT * FROM thermostat_info 
+            WHERE dev_id = "{dev_id}"
+            ORDER BY timestamp DESC
+            LIMIT 1
+        """.format(dev_id=thermostatInfo.deviceId)
+        res = curs.execute(queryString)
+        if res is not None:
+            res = res.fetchone()
+            if res is not None:
+                oldInfo = ThermostatInfo()
+
+                oldInfo.deviceId=res[1]
+                oldInfo.equipmentStatus=res[2]
+                oldInfo.modeLimit=res[4]
+                oldInfo.mode=res[3]
+                oldInfo.fan=res[6]
+                oldInfo.modeEmHeatAvailable=res[5]
+                oldInfo.fanCirculate=res[7]
+                oldInfo.fanCirculateSpeed=res[8]
+                oldInfo.heatSetpoint=res[9]
+                oldInfo.coolSetpoint=res[10]
+                oldInfo.setpointDelta=res[11]
+                oldInfo.setpointMinimum=res[12]
+                oldInfo.setpointMaximum=res[13]
+                oldInfo.tempIndoor=res[14]
+                oldInfo.humIndoor=res[15]
+                oldInfo.tempOutdoor=res[16]
+                oldInfo.humOutdoor=res[17]
+                oldInfo.scheduleEnabled=bool(res[18])
+                oldInfo.geofencingEnabled=bool(res[19])
+                    
+                if oldInfo == thermostatInfo:
+                    return False
+        return True
