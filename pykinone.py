@@ -35,11 +35,12 @@ def run():
                 dbManager.save(location)
             intialized = True
         
-        thermostatInfoJson = getThermostatInfo(authResponseJson, deviceResponseJson)
-        deviceId = deviceResponseJson[0]['devices'][0]['id']
-        thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), deviceId)
-        dbManager.save(thermInfo)
-        print(thermInfo.toString())
+        for location in locations:
+            for device in location.devices:
+                thermostatInfoJson = getThermostatInfo(authResponseJson, device.id)
+                thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), device.id)
+                dbManager.save(thermInfo)
+                print(thermInfo.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
     dbManager.close()
@@ -81,9 +82,8 @@ def getDevices(authResponseJson):
     devicesResponse = requests.get(DEVICES_URI_PATH, headers=headers)
     return devicesResponse.json()
 
-def getThermostatInfo(authResponseJson, deviceResponseJson):
+def getThermostatInfo(authResponseJson, deviceId):
     print("Getting device info...")
-    deviceId = deviceResponseJson[0]['devices'][0]['id']
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json',
