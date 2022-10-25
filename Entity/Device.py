@@ -3,10 +3,10 @@ import json
 class Device:
     def __init__(self, jsonStr):
         deviceJson = json.loads(jsonStr)
-        self.id = deviceJson['id']
-        self.name = deviceJson['name']
-        self.model = deviceJson['model']
-        self.firmwareVersion = deviceJson['firmwareVersion']
+        self._id = deviceJson['id']
+        self._name = deviceJson['name']
+        self._model = deviceJson['model']
+        self._firmwareVersion = deviceJson['firmwareVersion']
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -27,3 +27,35 @@ class Device:
         result += "Model: " + self.model + "\n"
         result += "Firmware Version: " + self.firmwareVersion + "\n"
         return result
+
+    @property
+    def id(self):
+        return self._id
+    
+    @id.setter
+    def id(self, value):
+        self._id = value
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
+    def model(self):
+        return self._model
+    
+    @model.setter
+    def model(self, value):
+        self._model = value
+
+    @property
+    def firmwareVersion(self):
+        return self._firmwareVersion
+    
+    @firmwareVersion.setter
+    def firmwareVersion(self, value):
+        self._firmwareVersion = value
