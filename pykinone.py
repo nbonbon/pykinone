@@ -2,6 +2,7 @@ import time
 import config
 import json
 import requests
+import logging
 from DbUtil.DbManager import DbManager
 from DevicesResponseUtil import DevicesResponseUtil
 from Entity.ThermostatInfo import ThermostatInfo
@@ -15,6 +16,13 @@ MINIMUM_QUERY_SPAN = 3 * 60
 integratorToken = ""
 integratorEmail = ""
 apiKey = ""
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
 
 def run():
     authTimeout = 0
@@ -40,7 +48,7 @@ def run():
                 thermostatInfoJson = getThermostatInfo(authResponseJson, device.id)
                 thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), device.id)
                 dbManager.save(thermInfo)
-                print(thermInfo.toString())
+                logger.info(thermInfo.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
     dbManager.close()
@@ -54,13 +62,13 @@ def loadConfiguration():
         integratorEmail = cfg['integratorEmail']
         global apiKey
         apiKey = cfg['apiKey']
-        print("Configuration file loaded...")
+        logger.debug("Configuration file loaded...")
     else:
-        print("Error loading config file")
+        logger.error("Error loading config file")
     return
 
 def initializeRestApiWithIntegratorToken():
-    print("Initializing integration token with REST API...")
+    logger.debug("Initializing integration token with REST API...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json'
@@ -73,7 +81,7 @@ def initializeRestApiWithIntegratorToken():
     return authResponse.json()
 
 def getDevices(authResponseJson):
-    print("Getting devices...")
+    logger.debug("Getting devices...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json',
@@ -83,7 +91,7 @@ def getDevices(authResponseJson):
     return devicesResponse.json()
 
 def getThermostatInfo(authResponseJson, deviceId):
-    print("Getting device info...")
+    logger.debug("Getting device info...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json',
