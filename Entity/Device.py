@@ -3,10 +3,10 @@ import json
 class Device:
     def __init__(self, jsonStr):
         deviceJson = json.loads(jsonStr)
-        self._id = deviceJson['id']
-        self._name = deviceJson['name']
-        self._model = deviceJson['model']
-        self._firmwareVersion = deviceJson['firmwareVersion']
+        self.id = deviceJson['id']
+        self.name = deviceJson['name']
+        self.model = deviceJson['model']
+        self.firmwareVersion = deviceJson['firmwareVersion']
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -34,7 +34,7 @@ class Device:
     
     @id.setter
     def id(self, value):
-        self._id = value
+        self._id = str(value)
 
     @property
     def name(self):
@@ -42,7 +42,7 @@ class Device:
     
     @name.setter
     def name(self, value):
-        self._name = value
+        self._name = str(value)
 
     @property
     def model(self):
@@ -50,7 +50,7 @@ class Device:
     
     @model.setter
     def model(self, value):
-        self._model = value
+        self._model = str(value)
 
     @property
     def firmwareVersion(self):
@@ -58,4 +58,4 @@ class Device:
     
     @firmwareVersion.setter
     def firmwareVersion(self, value):
-        self._firmwareVersion = value
+        self._firmwareVersion = str(value)

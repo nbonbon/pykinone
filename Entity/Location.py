@@ -4,8 +4,8 @@ from Entity.Device import Device
 class Location:
     def __init__(self, jsonStr):
         locationJson = json.loads(jsonStr)
-        self._name = locationJson['locationName']
-        self._devices = []
+        self.name = locationJson['locationName']
+        self.devices = []
         devicesJson = locationJson['devices']
         for deviceJson in devicesJson:
             device = Device(json.dumps(deviceJson))
@@ -33,7 +33,7 @@ class Location:
     
     @name.setter
     def name(self, value):
-        self._name = value
+        self._name = str(value)
 
     @property
     def devices(self):

@@ -4,25 +4,25 @@ class ThermostatInfo:
     def __init__(self, jsonStr=None, deviceId=None):
         if jsonStr != None:
             thermostatInfoJson = json.loads(jsonStr)
-            self._equipmentStatus = int(thermostatInfoJson['equipmentStatus'])
-            self._mode = int(thermostatInfoJson['mode'])
-            self._modeLimit = int(thermostatInfoJson['modeLimit'])
-            self._modeEmHeatAvailable = int(thermostatInfoJson['modeEmHeatAvailable'])
-            self._fan = int(thermostatInfoJson['fan'])
-            self._fanCirculate = int(thermostatInfoJson['fanCirculate'])
-            self._fanCirculateSpeed = int(thermostatInfoJson['fanCirculateSpeed'])
-            self._heatSetpoint = float(thermostatInfoJson['heatSetpoint'])
-            self._coolSetpoint = float(thermostatInfoJson['coolSetpoint'])
-            self._setpointDelta = float(thermostatInfoJson['setpointDelta'])
-            self._setpointMinimum = float(thermostatInfoJson['setpointMinimum'])
-            self._setpointMaximum = float(thermostatInfoJson['setpointMaximum'])
-            self._tempIndoor = float(thermostatInfoJson['tempIndoor'])
-            self._humIndoor = float(thermostatInfoJson['humIndoor'])
-            self._tempOutdoor = float(thermostatInfoJson['tempOutdoor'])
-            self._humOutdoor = float(thermostatInfoJson['humOutdoor'])
-            self._scheduleEnabled = thermostatInfoJson['scheduleEnabled']
-            self._geofencingEnabled = thermostatInfoJson['geofencingEnabled']
-            self._deviceId = deviceId
+            self.equipmentStatus = thermostatInfoJson['equipmentStatus']
+            self.mode = thermostatInfoJson['mode']
+            self.modeLimit = thermostatInfoJson['modeLimit']
+            self.modeEmHeatAvailable = thermostatInfoJson['modeEmHeatAvailable']
+            self.fan = thermostatInfoJson['fan']
+            self.fanCirculate = thermostatInfoJson['fanCirculate']
+            self.fanCirculateSpeed = thermostatInfoJson['fanCirculateSpeed']
+            self.heatSetpoint = thermostatInfoJson['heatSetpoint']
+            self.coolSetpoint = thermostatInfoJson['coolSetpoint']
+            self.setpointDelta = thermostatInfoJson['setpointDelta']
+            self.setpointMinimum = thermostatInfoJson['setpointMinimum']
+            self.setpointMaximum = thermostatInfoJson['setpointMaximum']
+            self.tempIndoor = thermostatInfoJson['tempIndoor']
+            self.humIndoor = thermostatInfoJson['humIndoor']
+            self.tempOutdoor = thermostatInfoJson['tempOutdoor']
+            self.humOutdoor = thermostatInfoJson['humOutdoor']
+            self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
+            self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
+            self.deviceId = deviceId
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -94,7 +94,7 @@ class ThermostatInfo:
     
     @equipmentStatus.setter
     def equipmentStatus(self, value):
-        self._equipmentStatus = value
+        self._equipmentStatus = int(value)
 
     @property
     def mode(self):
@@ -102,7 +102,7 @@ class ThermostatInfo:
     
     @mode.setter
     def mode(self, value):
-        self._mode = value
+        self._mode = int(value)
     
     @property
     def modeLimit(self):
@@ -110,7 +110,7 @@ class ThermostatInfo:
     
     @modeLimit.setter
     def modeLimit(self, value):
-        self._modeLimit = value
+        self._modeLimit = int(value)
 
     @property
     def modeEmHeatAvailable(self):
@@ -118,7 +118,7 @@ class ThermostatInfo:
     
     @modeEmHeatAvailable.setter
     def modeEmHeatAvailable(self, value):
-        self._modeEmHeatAvailable = value
+        self._modeEmHeatAvailable = int(value)
     
     @property
     def fan(self):
@@ -126,7 +126,7 @@ class ThermostatInfo:
     
     @fan.setter
     def fan(self, value):
-        self._fan = value
+        self._fan = int(value)
 
     @property
     def fanCirculate(self):
@@ -134,7 +134,7 @@ class ThermostatInfo:
     
     @fanCirculate.setter
     def fanCirculate(self, value):
-        self._fanCirculate = value
+        self._fanCirculate = int(value)
 
     @property
     def fanCirculateSpeed(self):
@@ -142,7 +142,7 @@ class ThermostatInfo:
     
     @fanCirculateSpeed.setter
     def fanCirculateSpeed(self, value):
-        self._fanCirculateSpeed = value
+        self._fanCirculateSpeed = int(value)
 
     @property
     def heatSetpoint(self):
@@ -150,8 +150,7 @@ class ThermostatInfo:
     
     @heatSetpoint.setter
     def heatSetpoint(self, value):
-        self._heatSetpoint = value
-
+        self._heatSetpoint = float(value)
 
     @property
     def coolSetpoint(self):
@@ -159,7 +158,7 @@ class ThermostatInfo:
     
     @coolSetpoint.setter
     def coolSetpoint(self, value):
-        self._coolSetpoint = value
+        self._coolSetpoint = float(value)
 
     @property
     def setpointDelta(self):
@@ -167,7 +166,7 @@ class ThermostatInfo:
     
     @setpointDelta.setter
     def setpointDelta(self, value):
-        self._setpointDelta = value
+        self._setpointDelta = float(value)
 
     @property
     def setpointMinimum(self):
@@ -175,7 +174,7 @@ class ThermostatInfo:
     
     @setpointMinimum.setter
     def setpointMinimum(self, value):
-        self._setpointMinimum = value
+        self._setpointMinimum = float(value)
 
     @property
     def setpointMaximum(self):
@@ -183,7 +182,7 @@ class ThermostatInfo:
     
     @setpointMaximum.setter
     def setpointMaximum(self, value):
-        self._setpointMaximum = value
+        self._setpointMaximum = float(value)
 
     @property
     def tempIndoor(self):
@@ -191,7 +190,7 @@ class ThermostatInfo:
     
     @tempIndoor.setter
     def tempIndoor(self, value):
-        self._tempIndoor = value
+        self._tempIndoor = float(value)
 
     @property
     def humIndoor(self):
@@ -199,7 +198,7 @@ class ThermostatInfo:
     
     @humIndoor.setter
     def humIndoor(self, value):
-        self._humIndoor = value
+        self._humIndoor = float(value)
 
     @property
     def tempOutdoor(self):
@@ -207,7 +206,7 @@ class ThermostatInfo:
     
     @tempOutdoor.setter
     def tempOutdoor(self, value):
-        self._tempOutdoor = value
+        self._tempOutdoor = float(value)
 
     @property
     def humOutdoor(self):
@@ -215,7 +214,7 @@ class ThermostatInfo:
     
     @humOutdoor.setter
     def humOutdoor(self, value):
-        self._humOutdoor = value
+        self._humOutdoor = float(value)
 
     @property
     def scheduleEnabled(self):
@@ -223,7 +222,7 @@ class ThermostatInfo:
     
     @scheduleEnabled.setter
     def scheduleEnabled(self, value):
-        self._scheduleEnabled = value
+        self._scheduleEnabled = bool(value)
 
     @property
     def geofencingEnabled(self):
@@ -231,7 +230,7 @@ class ThermostatInfo:
     
     @geofencingEnabled.setter
     def geofencingEnabled(self, value):
-        self._geofencingEnabled = value
+        self._geofencingEnabled = bool(value)
 
     @property
     def deviceId(self):
@@ -239,4 +238,4 @@ class ThermostatInfo:
     
     @deviceId.setter
     def deviceId(self, value):
-        self._deviceId = value
+        self._deviceId = str(value)
