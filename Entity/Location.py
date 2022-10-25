@@ -4,8 +4,8 @@ from Entity.Device import Device
 class Location:
     def __init__(self, jsonStr):
         locationJson = json.loads(jsonStr)
-        self.name = locationJson['locationName']
-        self.devices = []
+        self._name = locationJson['locationName']
+        self._devices = []
         devicesJson = locationJson['devices']
         for deviceJson in devicesJson:
             device = Device(json.dumps(deviceJson))
@@ -26,3 +26,19 @@ class Location:
             if self.devices[i] != other.devices[i]:
                 return False
         return True
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
+    def devices(self):
+        return self._devices
+    
+    @devices.setter
+    def devices(self, value):
+        self._devices = value
