@@ -23,12 +23,14 @@ Note: data within `<>` above are meant to be replaced with your values (includin
 Run `python3 pykinone.py` in a terminal to execute the program 
 
 ## Prerequesites
-- Python 3.3+
+- python 3.3+
+- matplotlib
+- pandas
 
 # Development
 
 ## Prerequesites
-- Python 3.3+
+- python 3.3+
 - pytest
 - unittest.mock
 
