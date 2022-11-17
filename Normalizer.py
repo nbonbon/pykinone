@@ -1,4 +1,5 @@
 import datetime
+import pytz
 
 class Normalizer:
     def normalizeTimedData(self, times, data, desiredTimespanInSeconds):
@@ -44,11 +45,12 @@ class Normalizer:
         return imputedTimes
 
     def convertTimeStringToTimestamp(self, timeString):
-        dateTime = datetime.datetime.strptime(timeString, "%Y-%m-%d %H:%M:%S")
+        dateTime = datetime.datetime.strptime(timeString, "%Y-%m-%d %H:%M:%S").replace(tzinfo=datetime.timezone.utc)
         return datetime.datetime.timestamp(dateTime)
 
     def convertTimestampToTimeString(self, timestamp):
-        dt = datetime.datetime.fromtimestamp(timestamp)
+        dt = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
+        print(dt)
         return dt.strftime("%Y-%m-%d %H:%M:%S")
 
     def indexOf(seld, collection, item):

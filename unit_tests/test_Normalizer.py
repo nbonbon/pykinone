@@ -57,25 +57,25 @@ def test_convertTimeStringToTimestamp_shouldConvertTimeStringToTimestamp():
     testTime = "2022-10-25 13:39:53"
     normalizer = Normalizer()
     result = normalizer.convertTimeStringToTimestamp(testTime)
-    assert result == 1666719593
+    assert result == float(1666705193)
 
 def test_convertTimeStringToTimestamp_shouldConvertTimeStringToTimestamp_ZeroPadded():
     testTime = "2022-01-01 01:01:01"
     normalizer = Normalizer()
     result = normalizer.convertTimeStringToTimestamp(testTime)
-    assert result == 1641016861
+    assert result == float(1640998861)
 
 def test_convertTimestampToTimeString_shouldConvertTimestampToTimeString():
     testTime = 1666719593
     normalizer = Normalizer()
     result = normalizer.convertTimestampToTimeString(testTime)
-    assert result == "2022-10-25 13:39:53"
+    assert result == "2022-10-25 17:39:53"
 
 def test_convertTimestampToTimeString_shouldConvertTimestampToTimeString_ZeroPadded():
     testTime = 1641016861
     normalizer = Normalizer()
     result = normalizer.convertTimestampToTimeString(testTime)
-    assert result == "2022-01-01 01:01:01"
+    assert result == "2022-01-01 06:01:01"
 
 def test_indexOf_shouldReturnNoneIfItemDoesntExist():
     testValues = ["0", "1", "2", "3", "4", "6"]
