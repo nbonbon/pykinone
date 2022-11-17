@@ -36,7 +36,7 @@ class ThermostatInfoDbUtil:
 
         queryString = """
             INSERT into thermostat_info VALUES(
-                datetime(CURRENT_TIMESTAMP, 'localtime'),
+                datetime(CURRENT_TIMESTAMP, 'utc'),
                 "{dev_id}", 
                 "{equipmentStatus}",
                 "{mode}",
