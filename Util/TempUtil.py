@@ -12,5 +12,11 @@ class TempUtil:
         cTemps = []
         for fTemp in fTemps:
             cTemps.append(TempUtil.fahrenheitToCelsius(fTemp))
-
         return cTemps
+
+    @staticmethod
+    def transformToFahrenheit(cTemps):
+        fTemps = []
+        for cTemp in cTemps:
+            fTemps.append(TempUtil.celsiusToFahrenheit(cTemp))
+        return fTemps
