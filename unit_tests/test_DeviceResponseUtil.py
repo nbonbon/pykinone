@@ -1,7 +1,4 @@
-import os, sys
 import json
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(CURRENT_DIR))
 from DevicesResponseUtil import DevicesResponseUtil
 
 def test_oneLocation():

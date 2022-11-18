@@ -1,10 +1,6 @@
-import os, sys
 import json
 from unittest.mock import Mock
 from Entity.Location import Location
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(CURRENT_DIR))
 
 def test_oneDevice():
     testJson = {
