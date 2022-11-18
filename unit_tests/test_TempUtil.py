@@ -36,3 +36,11 @@ def test_transformToCelsius():
     assert result[1] == -15
     assert result[2] == -25
     assert result[3] == 30
+
+def test_transformToFahrenheit():
+    cTemps = [0, -32, 32, 86]
+    result = TempUtil.transformToFahrenheit(cTemps)
+    assert len(cTemps) == len(result)
+    assert result[0] == 32
+    assert result[1] == -25.6
+    assert result[2] == 89.6
