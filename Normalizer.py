@@ -50,7 +50,6 @@ class Normalizer:
 
     def convertTimestampToTimeString(self, timestamp):
         dt = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc)
-        print(dt)
         return dt.strftime("%Y-%m-%d %H:%M:%S")
 
     def indexOf(seld, collection, item):
