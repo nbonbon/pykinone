@@ -6,6 +6,8 @@ import sqlite3
 import pandas as pd
 from Normalizer import Normalizer
 
+
+
 fig, ax = plt.subplots() 
 
 con = sqlite3.connect("pykinone.db")
