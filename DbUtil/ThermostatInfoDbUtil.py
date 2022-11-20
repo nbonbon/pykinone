@@ -5,7 +5,7 @@ class ThermostatInfoDbUtil:
     def createThermostatInfoTable(self, curs):
         return curs.execute("""
             CREATE TABLE thermostat_info(
-                timestamp DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime')),
+                timestamp DATETIME DEFAULT (datetime(CURRENT_TIMESTAMP, 'utc')),
                 dev_id TEXT,
                 equipmentStatus INTEGER,
                 mode INTEGER,
