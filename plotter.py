@@ -13,10 +13,12 @@ from Util.TempUtil import TempUtil
 
 degree_sign = u'\N{DEGREE SIGN}'
 
-args = PlotterArgParser.parseArgs(sys.argv[1:])
-timezone = args.timezone
-temp = args.temp
-datrangeStr = args.daterange #todo: parse in arg parser and fail if not valid
+parser = PlotterArgParser()
+parser.parseArgs(sys.argv[1:])
+timezone = parser.timezone
+tempUnits = parser.temperatureUnits
+startDate = parser.startDate
+endDate = parser.endDate
 
 fig, ax = plt.subplots() 
 
@@ -32,14 +34,14 @@ times = therm_info_df['timestamp']
 indoor_temps = therm_info_df['tempIndoor']
 outdoor_temps = therm_info_df['tempOutdoor']
 
-tempUnits = "C"
-if temp.lower() == 'f' or temp.lower() == 'fahrenheit':
+tempUnits = "c"
+if parser.temperatureUnits == 'f':
     indoor_temps = TempUtil.transformToFahrenheit(indoor_temps)
     outdoor_temps = TempUtil.transformToFahrenheit(outdoor_temps)
 
 normalizer = Normalizer()
 timesResult, indoorTempsResult = normalizer.normalizeTimedData(times, indoor_temps, 3*60)
-timesResult = TimeUtil.transformUtcToTimezone(timesResult, timezone)
+timesResult = TimeUtil.transformUtcToTimezone(timesResult, parser.timezone)
 plt_times = mdates.date2num(timesResult)
 ax.plot(plt_times, indoorTempsResult, linestyle='solid', label='Indoor Temperature')
 
@@ -48,8 +50,8 @@ ax.plot(plt_times, outdoorTempsResult, linestyle='solid', label='Outdoor Tempera
 
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
 ax.xaxis.set_major_locator(mdates.MinuteLocator(interval=15))
-ax.set_xlabel('Time [' + args.timezone + ']') #todo: better way to get timezone name
-ax.set_ylabel('Temperature [' + tempUnits + degree_sign + ']')
+ax.set_xlabel('Time [' + str(parser.timezone) + ']') 
+ax.set_ylabel('Temperature [' + parser.temperatureUnits.upper() + degree_sign + ']')
 ax.set_title('Historical Temperature Data')
 ax.legend()
 fig.autofmt_xdate()

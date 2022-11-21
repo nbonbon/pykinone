@@ -1,3 +1,4 @@
+import sys
 import argparse
 from dateutil import tz
 import dateutil.parser as dateparser
@@ -11,17 +12,18 @@ class PlotterArgParser:
         self.temperatureUnits = "c"
         self.startDate = None
         self.endDate = None
+        self.parser = None
 
     def parseArgs(self, args):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("-t", "--temperature",
+        self.parser = argparse.ArgumentParser()
+        self.parser.add_argument("-t", "--temperature",
                             help="temperature units. Default: Celsius, Options: [[c]elsius], [[f]ahrenheit]")
-        parser.add_argument("-tz", "--timezone",
+        self.parser.add_argument("-tz", "--timezone",
                             help="timezone to display dates [Default: UTC]")
-        parser.add_argument("-d", "--daterange",
+        self.parser.add_argument("-d", "--daterange",
                             help="Date range to plot data for [Default: last 24 hours]. Format: 'startdate,enddate' with date in ISO 8601 format.")
 
-        parsed_args = parser.parse_args(args)
+        parsed_args = self.parser.parse_args(args)
 
         self.timezone = parsed_args.timezone
         self.temperatureUnits = parsed_args.temperature
@@ -40,7 +42,9 @@ class PlotterArgParser:
         elif type(value) is tz.tzfile:
             self._timezone = value
         else:
-            argparse.ArgumentTypeError('Timezone was not a valid timezone')
+            print(argparse.ArgumentTypeError('Timezone was not a valid timezone'))
+            self.parser.print_help()
+            sys.exit(1)
 
     @property
     def temperatureUnits(self):
@@ -59,7 +63,10 @@ class PlotterArgParser:
             elif vLower == "fahrenheit":
                 self._temperatureUnits = "f"
             else:
-                argparse.ArgumentTypeError('Temperature units must be [c(elsius)] or [f(ahrenheit)]')
+                self.parser.print_help()
+                print(argparse.ArgumentTypeError('Temperature units must be [c(elsius)] or [f(ahrenheit)]'))
+                self.parser.print_help()
+                sys.exit(1)
 
     @property
     def startDate(self):
@@ -80,9 +87,7 @@ class PlotterArgParser:
     def _parseDates(self, dateRangeStr):
         if dateRangeStr is None:
             endDateTime = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-            print("Today: " + endDateTime.isoformat())
             startDateTime = endDateTime  - timedelta(days=1)
-            print("Yesterday: " + startDateTime.isoformat())
             self.endDate = endDateTime
             self.startDate = startDateTime
         else:

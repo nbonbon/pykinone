@@ -62,6 +62,15 @@ def test_parseArgs_timezone_long():
 
     assert parser.timezone == tz.gettz("America/Cancun")
 
+# def test_parseArgs_timezone_invalid():
+
+#     with assertRaises(SystemExit) as cm:
+#         args = ['--timezone', 'ACDC']
+
+#         parser = PlotterArgParser()
+#         parser.parseArgs(args)
+
+#     assert cm.exception.code == 1
 
 def test_parseArgs_daterange_short():
     args = ['-d', '2022-10-25,2022-10-26']
