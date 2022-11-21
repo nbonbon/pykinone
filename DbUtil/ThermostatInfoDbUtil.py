@@ -1,4 +1,4 @@
-from Entity.ThermostatInfo import ThermostatInfo
+"SELECT * from thermostat_info"from Entity.ThermostatInfo import ThermostatInfo
 
 
 class ThermostatInfoDbUtil:
