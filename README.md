@@ -33,15 +33,12 @@ Executing this program will current create a plot with one line for indoor tempe
 
 The program allows to supply you prefered timezone and temperature units (see the -h help dialog for options)
 
-## Prerequesites
-- python 3.3+
-- matplotlib
-- pandas
-
 # Development
 
 ## Prerequesites
 - python 3.3+
+- matplotlib
+- pandas
 - pytest
 - unittest.mock
 
