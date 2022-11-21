@@ -5,11 +5,11 @@ import numpy as np
 import sqlite3
 import pandas as pd
 import sys
-from dateutil import tz
 from Normalizer import Normalizer
 from ArgParsers.PlotterArgParser import PlotterArgParser
 from Util.TimeUtil import TimeUtil
 from Util.TempUtil import TempUtil
+from Util.TimezoneUtil import TimezoneUtil
 
 degree_sign = u'\N{DEGREE SIGN}'
 
@@ -50,8 +50,8 @@ ax.plot(plt_times, outdoorTempsResult, linestyle='solid', label='Outdoor Tempera
 
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d %H:%M:%S'))
 ax.xaxis.set_major_locator(mdates.MinuteLocator(interval=15))
-ax.set_xlabel('Time [' + str(parser.timezone) + ']') 
-ax.set_ylabel('Temperature [' + parser.temperatureUnits.upper() + degree_sign + ']')
+ax.set_xlabel('Time [' + TimezoneUtil.getTimezoneString(timezone) + ']') 
+ax.set_ylabel('Temperature [' + degree_sign + tempUnits.upper() + ']')
 ax.set_title('Historical Temperature Data')
 ax.legend()
 fig.autofmt_xdate()
