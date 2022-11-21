@@ -21,7 +21,7 @@ class PlotterArgParser:
         self.parser.add_argument("-tz", "--timezone",
                             help="timezone to display dates [Default: UTC]")
         self.parser.add_argument("-d", "--daterange",
-                            help="Date range to plot data for [Default: last 24 hours]. Format: 'startdate,enddate' with date in ISO 8601 format.")
+                            help="Date range to plot data for [Default: last 24 hours]. Format: 'startdate,enddate' with date in ISO 8601 format. NOTE: The use of quotes.")
 
         parsed_args = self.parser.parse_args(args)
 

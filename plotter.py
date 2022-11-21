@@ -26,9 +26,15 @@ con = sqlite3.connect("pykinone.db")
 
 queryString = """
     SELECT * FROM thermostat_info 
+    WHERE timestamp 
+    BETWEEN '{start}' AND '{end}'
     ORDER BY timestamp ASC
-"""
-therm_info_df = pd.read_sql_query("SELECT * from thermostat_info", con)
+""".format(start=startDate, end=endDate)
+therm_info_df = pd.read_sql_query(queryString, con)
+
+if therm_info_df.empty:
+    print("No data found")
+    exit(0)
 
 times = therm_info_df['timestamp']
 indoor_temps = therm_info_df['tempIndoor']
