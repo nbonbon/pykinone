@@ -14,7 +14,7 @@ from Util.TempUtil import TempUtil
 degree_sign = u'\N{DEGREE SIGN}'
 
 args = PlotterArgParser.parseArgs(sys.argv[1:])
-timezone = tz.gettz(args.timezone) #todo: parse in arg parser and fail if not valid
+timezone = args.timezone
 temp = args.temp
 datrangeStr = args.daterange #todo: parse in arg parser and fail if not valid
 
