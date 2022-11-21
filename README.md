@@ -8,7 +8,9 @@ The application currently does **not** support the Daikin Open API functions for
 
 # Use
 
-## Setup
+## Data Collection
+
+### Setup
 Create a configuration file next to the `pykinone.py` named `pykinone.conf`. In `pykinone.conf` add the following fields and their corresponding values you retrieved for your system according to the Daikin One Open API documentation.
 
 ```
@@ -19,8 +21,17 @@ integratorToken:'<integrator-token-from-daikin-one-app>'
 
 Note: data within `<>` above are meant to be replaced with your values (including the `<>` themselves)
 
-## Execution
+### Execution
 Run `python3 pykinone.py` in a terminal to execute the program 
+
+## Data Visualization
+
+## Execution
+Run `python3 plotter -h` to see options.
+
+Executing this program will current create a plot with one line for indoor temperatures vs time and another for outdooor temperatures vs time.
+
+The program allows to supply you prefered timezone and temperature units (see the -h help dialog for options)
 
 ## Prerequesites
 - python 3.3+
