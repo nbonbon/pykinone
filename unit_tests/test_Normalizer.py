@@ -8,6 +8,25 @@ def test_normalizeTimedData_lengthsNotEqual():
     result = normalizer.normalizeTimedData(testTimes, testData, 3*60)
     assert result is None
 
+def test_normalizeTimedData_oneItem():
+    testTimes = ["2022-10-25 16:01:43"]
+    testData = [1]
+    normalizer = Normalizer()
+    timeResult, dataResult = normalizer.normalizeTimedData(testTimes, testData, 3*60)
+    assert len(timeResult) == len(dataResult)
+    assert len(timeResult) == 1
+    assert timeResult[0] == "2022-10-25 16:01:43+00:00"
+
+def test_normalizeTimedData_twoConsecutiveItems():
+    testTimes = ["2022-10-25 16:01:43", "2022-10-25 16:04:43"]
+    testData = [1, 2]
+    normalizer = Normalizer()
+    timeResult, dataResult = normalizer.normalizeTimedData(testTimes, testData, 3*60)
+    assert len(timeResult) == len(dataResult)
+    assert len(timeResult) == 2
+    assert timeResult[0] == "2022-10-25 16:01:43+00:00"
+    assert timeResult[1] == "2022-10-25 16:04:43+00:00"
+
 def test_normalizeTimedData_MissingTimesAndDataFromPreviousTimeAreAdded():
     testTimes = [
         "2022-10-25 16:01:43",
@@ -33,11 +52,11 @@ def test_timeValueImputation_shouldFillInMissingTimes():
     normalizer = Normalizer()
     result = normalizer.timeValueImputation(testTimes, 3*60)
     assert len(result) == 5
-    assert result[0] == "2022-10-25 16:01:43"
-    assert result[1] == "2022-10-25 16:04:43"
-    assert result[2] == "2022-10-25 16:07:43"
-    assert result[3] == "2022-10-25 16:10:43"
-    assert result[4] == "2022-10-25 16:10:44"
+    assert result[0] == "2022-10-25 16:01:43+00:00"
+    assert result[1] == "2022-10-25 16:04:43+00:00"
+    assert result[2] == "2022-10-25 16:07:43+00:00"
+    assert result[3] == "2022-10-25 16:10:43+00:00"
+    assert result[4] == "2022-10-25 16:10:44+00:00"
 
 def test_timeValueImputation_shouldNotFillInWhenNoTimesMissing():
     testTimes = [
@@ -64,13 +83,13 @@ def test_convertTimestampToTimeString_shouldConvertTimestampToTimeString():
     testTime = 1666719593
     normalizer = Normalizer()
     result = normalizer.convertTimestampToTimeString(testTime)
-    assert result == "2022-10-25 17:39:53"
+    assert result == "2022-10-25 17:39:53+00:00"
 
 def test_convertTimestampToTimeString_shouldConvertTimestampToTimeString_ZeroPadded():
     testTime = 1641016861
     normalizer = Normalizer()
     result = normalizer.convertTimestampToTimeString(testTime)
-    assert result == "2022-01-01 06:01:01"
+    assert result == "2022-01-01 06:01:01+00:00"
 
 def test_indexOf_shouldReturnNoneIfItemDoesntExist():
     testValues = ["0", "1", "2", "3", "4", "6"]
