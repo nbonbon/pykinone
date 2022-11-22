@@ -8,6 +8,9 @@ The application currently does **not** support the Daikin Open API functions for
 
 # Use
 
+## Download Dependencies
+Execute `pip3 install -r requirements.txt` to install the projects needed dependencies.
+
 ## Data Collection
 
 ### Setup
