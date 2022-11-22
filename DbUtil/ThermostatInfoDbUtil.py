@@ -34,9 +34,14 @@ class ThermostatInfoDbUtil:
         if self.__hasDataUpdatedSinceLastSave(thermostatInfo, curs) == False:
             return
 
+        if thermostatInfo.time == None:
+            timeStr = "datetime(CURRENT_TIMESTAMP, 'utc')"
+        else:
+            timeStr = "\"" + thermostatInfo.time + "\""
+
         queryString = """
             INSERT into thermostat_info VALUES(
-                datetime(CURRENT_TIMESTAMP, 'utc'),
+                {timeStr},
                 "{dev_id}", 
                 "{equipmentStatus}",
                 "{mode}",
@@ -57,7 +62,8 @@ class ThermostatInfoDbUtil:
                 "{scheduleEnabled}",
                 "{geofencingEnabled}"
             )
-        """.format(dev_id=thermostatInfo.deviceId, 
+        """.format(timeStr=timeStr,
+                    dev_id=thermostatInfo.deviceId, 
                     equipmentStatus=thermostatInfo.equipmentStatus,
                     mode=thermostatInfo.mode, 
                     modeLimit=thermostatInfo.modeLimit, 
