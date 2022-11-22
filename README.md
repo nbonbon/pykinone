@@ -25,12 +25,12 @@ integratorToken:'<integrator-token-from-daikin-one-app>'
 Note: data within `<>` above are meant to be replaced with your values (including the `<>` themselves)
 
 ### Execution
-Run `python3 pykinone.py` in a terminal to execute the program 
+Execute `python3 pykinone.py` in a terminal to execute the program 
 
 ## Data Visualization
 
 ## Execution
-Run `python3 plotter -h` to see options.
+Execute `python3 plotter -h` to see options.
 
 Executing this program will current create a plot with one line for indoor temperatures vs time and another for outdooor temperatures vs time.
 
@@ -40,10 +40,8 @@ The program allows to supply you prefered timezone and temperature units (see th
 
 ## Prerequesites
 - python 3.3+
-- matplotlib
-- pandas
-- pytest
-- unittest.mock
+
+Dependencies can be downloaded via pip and the projects's requirements.txt file. See "Download Dependencies" section.
 
 ## Running Unit Tests
 Execute `pytest` from the root project directory. pytest install location on your machine must be in your PATH.
