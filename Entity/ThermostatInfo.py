@@ -2,6 +2,8 @@ import json
 
 class ThermostatInfo:
     def __init__(self, jsonStr=None, deviceId=None):
+        self.time = None
+        
         if jsonStr != None:
             thermostatInfoJson = json.loads(jsonStr)
             self.equipmentStatus = thermostatInfoJson['equipmentStatus']
@@ -88,6 +90,14 @@ class ThermostatInfo:
         result += "Geofencing Enabled: " + str(self.geofencingEnabled) + "\n"
         return result
     
+    @property
+    def time(self):
+        return self._time
+    
+    @time.setter
+    def time(self, value):
+        self._time = value
+
     @property
     def equipmentStatus(self):
         return self._equipmentStatus

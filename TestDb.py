@@ -1,10 +1,23 @@
-import time
+import sys
 import json
+import argparse
+from random import *
+from datetime import datetime
+from datetime import timedelta
 from DbUtil.DbManager import DbManager
 from Entity.Location import Location
 from Entity.ThermostatInfo import ThermostatInfo
 
 def run():
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-t", "--two",
+                        help="Database with 2 days of data always unique every 3 minutes (start: 2022-02-02 00:00:00, end: 2022-02-03 23:59:59)", action='store_true')
+    group.add_argument("-o", "--onehundred",
+                        help="Database with 100 rows. Using current time.", action='store_true')
+
+    parsed_args = parser.parse_args(sys.argv[1:])
+
     dbManager = DbManager()
     
     # create location / device
@@ -44,19 +57,33 @@ def run():
         "geofencingEnabled": False
     }
 
-    # Fill 100 rows
-    # for i in range(100):
-    #     info = ThermostatInfo(json.dumps(testThemostatInfoJson), "testId")
-    #     print("Before: " + str(info.tempOutdoor))
-    #     info.tempOutdoor = i
-    #     print("After: " + str(info.tempOutdoor))
-    #     dbManager.save(info)
-    #     print("Saving therminfo: " + str(i))
-    #     time.sleep(1)
+    if parsed_args.onehundred:
+        print("Creating db with 100 entries...")
+        currentDateTime = datetime.now()
+        for i in range(100):
+            info = ThermostatInfo(json.dumps(testThemostatInfoJson), "testId")
+            info.time = currentDateTime.isoformat(" ","seconds")
+            info.tempOutdoor = i
+            dbManager.save(info)
+            currentDateTime = currentDateTime + timedelta(minutes=3)
+    elif parsed_args.two:
+        print("Creating db with 2 days worth of entries...")
+        currentDateTime = datetime.fromisoformat("2022-02-02 00:00:00")
+        lastValue = None
+        for day in range(2):
+            for hour in range(24):
+                for minute in range(0, 60, 3):
+                    info = ThermostatInfo(json.dumps(testThemostatInfoJson), "testId")
+                    info.tempOutdoor = hour
+                    newTemp = randint(0, 30) # just to ensure something has changed
+                    if newTemp == lastValue:
+                        newTemp = newTemp + 1
+                    lastValue = newTemp
+                    info.tempIndoor = newTemp
+                    info.time = currentDateTime.isoformat(" ","seconds")
+                    dbManager.save(info)
+                    currentDateTime = currentDateTime + timedelta(minutes=3)
 
-    # create themostat_infos
-        # Create data for 2 days. Every hour has temp set to hour number
-            # need to be able to set the time or else this will take forever to create
     dbManager.close()
 
 run()
