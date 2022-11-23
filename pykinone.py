@@ -34,7 +34,7 @@ def run():
         now = time.time()
         if now > authTimeout:
             authResponseJson = initializeRestApiWithIntegratorToken()
-            authTimeout = time.time() + int(authResponseJson['accessTokenExpiresIn'])
+            authTimeout = time.time() + int(authResponseJson['accessTokenExpiresIn']) - 1 # subtract one to give a buffer
         
         if not intialized:
             deviceResponseJson = getDevices(authResponseJson)
