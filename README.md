@@ -4,6 +4,8 @@ Python application to query the [Daikin One Open API](https://daikinone.com/open
 ## Current Status
 This application currently will find all user devices and query for thermostat information according to the Daikin Open API. This information will be stored in a local sqlite database.
 
+The API is queried every 3 minutes as specified in the Open API documentation. If no data has changed a new datapoint will not be saved in the database. The plotter (see Data Visualization section) will dynamically add these points back in when plotting data.
+
 The application currently does **not** support the Daikin Open API functions for updating thermostat settings. This is planned for the _future_.
 
 # Use
