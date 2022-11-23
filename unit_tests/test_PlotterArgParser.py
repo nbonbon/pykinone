@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from dateutil import tz
 from ArgParsers.PlotterArgParser import PlotterArgParser
+from Entity.TemperatureUnit import TemperatureUnit
 
 def test_parseArgs_defaults():
     args = []
@@ -9,7 +10,7 @@ def test_parseArgs_defaults():
     parser = PlotterArgParser()
     parser.parseArgs(args)
 
-    assert parser.temperatureUnits == "c"
+    assert parser.temperatureUnits == TemperatureUnit.Celsius
     assert parser.timezone == tz.gettz("UTC")
     assert parser.startDate.isoformat() == (datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)  - timedelta(days=1)).isoformat()
     assert parser.endDate.isoformat() ==  datetime.now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
@@ -20,7 +21,7 @@ def test_parseArgs_tempF_shortOption():
     parser = PlotterArgParser()
     parser.parseArgs(args)
 
-    assert parser.temperatureUnits == "f"
+    assert parser.temperatureUnits == TemperatureUnit.Fahrenheit
 
 def test_parseArgs_tempF_longOption():
     args = ['--temperature', 'F']
@@ -28,7 +29,7 @@ def test_parseArgs_tempF_longOption():
     parser = PlotterArgParser()
     parser.parseArgs(args)
 
-    assert parser.temperatureUnits == "f"
+    assert parser.temperatureUnits == TemperatureUnit.Fahrenheit
 
 def test_parseArgs_tempF_longValue_Celsius():
     args = ['--temperature', 'Celsius']
@@ -36,7 +37,7 @@ def test_parseArgs_tempF_longValue_Celsius():
     parser = PlotterArgParser()
     parser.parseArgs(args)
 
-    assert parser.temperatureUnits == "c"
+    assert parser.temperatureUnits == TemperatureUnit.Celsius
 
 def test_parseArgs_tempF_longValue_Celsius():
     args = ['--temperature', 'Fahrenheit']
@@ -44,7 +45,7 @@ def test_parseArgs_tempF_longValue_Celsius():
     parser = PlotterArgParser()
     parser.parseArgs(args)
 
-    assert parser.temperatureUnits == "f"
+    assert parser.temperatureUnits == TemperatureUnit.Fahrenheit
 
 def test_parseArgs_timezone_short():
     args = ['-tz', 'America/Chicago']

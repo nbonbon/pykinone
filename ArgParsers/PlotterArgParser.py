@@ -5,11 +5,12 @@ import dateutil.parser as dateparser
 from datetime import datetime
 from datetime import timedelta
 from zoneinfo import available_timezones
+from Entity.TemperatureUnit import TemperatureUnit
 
 class PlotterArgParser:
     def __init__(self):
         self.timezone = "UTC"
-        self.temperatureUnits = "c"
+        self.temperatureUnits = TemperatureUnit.Celsius
         self.startDate = None
         self.endDate = None
         self.parser = None
@@ -53,15 +54,15 @@ class PlotterArgParser:
     @temperatureUnits.setter
     def temperatureUnits(self, value):
         if value is None:
-            self._temperatureUnits = "c"
+            self._temperatureUnits = TemperatureUnit.Celsius
         else:
             vLower = value.lower()
-            if (vLower == "c") or (vLower == "f"):
+            if (vLower == TemperatureUnit.Celsius) or (vLower == TemperatureUnit.Fahrenheit):
                 self._temperatureUnits = vLower
             elif vLower == "celsius":
-                self._temperatureUnits = "c"
+                self._temperatureUnits = TemperatureUnit.Celsius
             elif vLower == "fahrenheit":
-                self._temperatureUnits = "f"
+                self._temperatureUnits = TemperatureUnit.Fahrenheit
             else:
                 self.parser.print_help()
                 print(argparse.ArgumentTypeError('Temperature units must be [c(elsius)] or [f(ahrenheit)]'))
