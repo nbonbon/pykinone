@@ -10,6 +10,7 @@ from ArgParsers.PlotterArgParser import PlotterArgParser
 from Util.TimeUtil import TimeUtil
 from Util.TempUtil import TempUtil
 from Util.TimezoneUtil import TimezoneUtil
+from Entity.TemperatureUnit import TemperatureUnit
 
 degree_sign = u'\N{DEGREE SIGN}'
 
@@ -40,8 +41,8 @@ times = therm_info_df['timestamp']
 indoor_temps = therm_info_df['tempIndoor']
 outdoor_temps = therm_info_df['tempOutdoor']
 
-tempUnits = "c"
-if parser.temperatureUnits == 'f':
+tempUnits = TemperatureUnit.Celsius
+if parser.temperatureUnits == TemperatureUnit.Fahrenheit:
     indoor_temps = TempUtil.transformToFahrenheit(indoor_temps)
     outdoor_temps = TempUtil.transformToFahrenheit(outdoor_temps)
 
