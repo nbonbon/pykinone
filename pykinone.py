@@ -1,3 +1,4 @@
+import sys
 import time
 import config
 import json
@@ -6,6 +7,7 @@ import logging
 from DbUtil.DbManager import DbManager
 from DevicesResponseUtil import DevicesResponseUtil
 from Entity.ThermostatInfo import ThermostatInfo
+from ArgParsers.PykinArgParser import PykinArgParser
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
@@ -13,12 +15,16 @@ DEVICES_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/devices"
 SECONDS_IN_ONE_MINUTE = 60
 MINIMUM_QUERY_SPAN = 3 * 60
 
+parser = PykinArgParser()
+parser.parseArgs(sys.argv[1:])
+verbosityLevel = parser.verbosityLevel
+
 integratorToken = ""
 integratorEmail = ""
 apiKey = ""
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(verbosityLevel)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
