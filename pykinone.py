@@ -14,6 +14,7 @@ AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
 DEVICES_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/devices"
 SECONDS_IN_ONE_MINUTE = 60
 MINIMUM_QUERY_SPAN = 3 * 60
+DEFAULT_LOG_FILE = "pykinone.log"
 
 parser = PykinArgParser()
 parser.parseArgs(sys.argv[1:])
@@ -24,11 +25,18 @@ integratorEmail = ""
 apiKey = ""
 
 logger = logging.getLogger(__name__)
-logger.setLevel(verbosityLevel)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
+
+streamHandler = logging.StreamHandler()
+streamHandler.setFormatter(formatter)
+streamHandler.setLevel(verbosityLevel)
+
+fileHandler = logging.FileHandler(DEFAULT_LOG_FILE)
+fileHandler.setFormatter(formatter)
+fileHandler.setLevel(logging.WARNING)
+
+logger.addHandler(streamHandler)
+logger.addHandler(fileHandler)
 
 def run():
     authTimeout = 0
