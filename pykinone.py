@@ -20,6 +20,7 @@ parser.parseArgs(sys.argv[1:])
 verbosityLevel = parser.verbosityLevel
 logFile = parser.logFile
 configFile = parser.configFile
+databaseFile = parser.databaseFile
 
 integratorToken = ""
 integratorEmail = ""
@@ -44,7 +45,7 @@ def run():
     logger.info("Starting...")
     authTimeout = 0
     loadConfiguration()
-    dbManager = DbManager()
+    dbManager = DbManager(databaseFile)
     running = True
     intialized = False
     while running:

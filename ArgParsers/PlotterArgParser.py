@@ -6,6 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 from zoneinfo import available_timezones
 from Entity.TemperatureUnit import TemperatureUnit
+from constants import *
 
 class PlotterArgParser:
     def __init__(self):
@@ -14,6 +15,7 @@ class PlotterArgParser:
         self.startDate = None
         self.endDate = None
         self.parser = None
+        self.databaseFile = DEFAULT_DATABASE_FILE
 
     def parseArgs(self, args):
         self.parser = argparse.ArgumentParser()
@@ -23,11 +25,13 @@ class PlotterArgParser:
                             help="timezone to display dates [Default: UTC]")
         self.parser.add_argument("-d", "--daterange",
                             help="Date range to plot data for [Default: last 24 hours]. Format: 'startdate,enddate' with date in ISO 8601 format. NOTE: The use of quotes.")
+        self.parser.add_argument("-db", "--database", help="Database file path. Default: 'pykinone.db'")
 
         parsed_args = self.parser.parse_args(args)
 
         self.timezone = parsed_args.timezone
         self.temperatureUnits = parsed_args.temperature
+        self.databaseFile = parsed_args.database
         self.daterange = self._parseDates(parsed_args.daterange)
 
     @property
@@ -84,6 +88,17 @@ class PlotterArgParser:
     @endDate.setter
     def endDate(self, value):
         self._endDate = value
+
+    @property
+    def databaseFile(self):
+        return self._databaseFile
+    
+    @databaseFile.setter
+    def databaseFile(self, value):
+        if value is None:
+            self._databaseFile = DEFAULT_DATABASE_FILE
+        else:
+            self._databaseFile = value
 
     def _parseDates(self, dateRangeStr):
         if dateRangeStr is None:
