@@ -2,11 +2,16 @@ import json
 
 class Device:
     def __init__(self, jsonStr):
-        deviceJson = json.loads(jsonStr)
-        self.id = deviceJson['id']
-        self.name = deviceJson['name']
-        self.model = deviceJson['model']
-        self.firmwareVersion = deviceJson['firmwareVersion']
+        if jsonStr is not None:
+            deviceJson = json.loads(jsonStr)
+            if 'id' in deviceJson:
+                self.id = deviceJson['id']
+            if 'name' in deviceJson:
+                self.name = deviceJson['name']
+            if 'model' in deviceJson:
+                self.model = deviceJson['model']
+            if 'firmwareVersion' in deviceJson:
+                self.firmwareVersion = deviceJson['firmwareVersion']
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -27,6 +32,12 @@ class Device:
         result += "Model: " + self.model + "\n"
         result += "Firmware Version: " + self.firmwareVersion + "\n"
         return result
+
+    def isValid(self):
+        return ((hasattr(self, "id") and (getattr(self, "id") is not None)) and
+        (hasattr(self, "name") and (getattr(self, "name") is not None))and
+        (hasattr(self, "model") and (getattr(self, "model") is not None))and
+        (hasattr(self, "firmwareVersion") and (getattr(self, "firmwareVersion") is not None)))
 
     @property
     def id(self):

@@ -111,6 +111,29 @@ def test_eq_are_not_equal():
     location2 = Location(json.dumps(testJson2))
     assert location1 != location2
 
+def test_shouldNotAddInvalidDevice():
+    testJson = {
+        "locationName": "locationName1",
+        "devices": 
+        [
+            {
+                "id": "id1",
+                "RPM": "hundids",
+            },
+            {
+                "id": "id2",
+                "name": "name2",
+                "model": "model2",
+                "firmwareVersion": "firmwareVersion2"
+            },
+        ]
+    }
+
+    location = Location(json.dumps(testJson))
+    assert location.isValid() == True
+    assert len(location.devices) == 1
+    assert location.devices[0].name == "name2"
+
 def test_EmptyJson():
     testJson = []
 

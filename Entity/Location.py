@@ -12,7 +12,8 @@ class Location:
                 devicesJson = locationJson['devices']
                 for deviceJson in devicesJson:
                     device = Device(json.dumps(deviceJson))
-                    self.devices.append(device)
+                    if device.isValid():
+                        self.devices.append(device)
 
     def toString(self):
         result = "Location Name: " + self.name + "\n"
