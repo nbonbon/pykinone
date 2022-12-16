@@ -63,8 +63,11 @@ def run():
             for device in location.devices:
                 thermostatInfoJson = getThermostatInfo(authResponseJson, device.id)
                 thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), device.id)
-                dbManager.save(thermInfo)
-                logger.debug(thermInfo.toString())
+                if thermInfo.isValid():
+                    dbManager.save(thermInfo)
+                    logger.debug(thermInfo.toString())
+                else:
+                    logger.debug("Invalid thermostat info object.")
         time.sleep(MINIMUM_QUERY_SPAN)
 
     logger.info("Shutting down...")

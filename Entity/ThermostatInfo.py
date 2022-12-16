@@ -115,7 +115,7 @@ class ThermostatInfo:
         (hasattr(self, "modeEmHeatAvailable") and (getattr(self, "modeEmHeatAvailable") is not None))and
         (hasattr(self, "fan") and (getattr(self, "fan") is not None))and
         (hasattr(self, "fanCirculate") and (getattr(self, "fanCirculate") is not None))and
-        (hasattr(self, "fanCirculateSpeed") and (getattr(self, "anCirculateSpeed") is not None))and
+        (hasattr(self, "fanCirculateSpeed") and (getattr(self, "fanCirculateSpeed") is not None))and
         (hasattr(self, "heatSetpoint") and (getattr(self, "heatSetpoint") is not None))and
         (hasattr(self, "coolSetpoint") and (getattr(self, "coolSetpoint") is not None))and
         (hasattr(self, "setpointDelta") and (getattr(self, "setpointDelta") is not None))and
