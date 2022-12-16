@@ -62,3 +62,25 @@ def test_multipleLocations():
     assert locations[1].name == "locationName2"
     assert len(locations[1].devices) == 2
     assert locations[1].devices[1].model == "model3"
+
+def test_EmptyJson():
+    testJson = []
+
+    locations = DevicesResponseUtil.parseDevicesResponse(json.dumps(testJson))
+    assert len(locations) == 0
+
+def test_NoneJson():
+    testJson = None
+
+    locations = DevicesResponseUtil.parseDevicesResponse(testJson)
+    assert len(locations) == 0
+
+def test_InvalidJson():
+    testJson = [
+        {
+            "nickname": "nicky"
+        }
+    ]
+
+    locations = DevicesResponseUtil.parseDevicesResponse(json.dumps(testJson))
+    assert len(locations) == 0

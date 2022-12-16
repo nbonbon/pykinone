@@ -110,3 +110,25 @@ def test_eq_are_not_equal():
     location1 = Location(json.dumps(testJson1))
     location2 = Location(json.dumps(testJson2))
     assert location1 != location2
+
+def test_EmptyJson():
+    testJson = []
+
+    location = Location(json.dumps(testJson))
+    assert location.isValid() == False
+
+def test_NoneJson():
+    testJson = None
+
+    location = Location(testJson)
+    assert location.isValid() == False
+
+def test_InvalidJson():
+    testJson = [
+        {
+            "nickname": "nicky"
+        }
+    ]
+
+    location = Location(json.dumps(testJson))
+    assert location.isValid() == False

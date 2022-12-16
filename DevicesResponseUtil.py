@@ -5,11 +5,16 @@ class DevicesResponseUtil:
 
     @staticmethod
     def parseDevicesResponse(jsonStr):
-        locationsJson = json.loads(jsonStr)
         locationList = []
+
+        if jsonStr is None:
+            return locationList
+
+        locationsJson = json.loads(jsonStr)
         
         for locationJson in locationsJson:
             location = Location(json.dumps(locationJson))
-            locationList.append(location)
+            if location.isValid():
+                locationList.append(location)
 
         return locationList
