@@ -3,13 +3,17 @@ from Entity.Device import Device
 
 class Location:
     def __init__(self, jsonStr):
-        locationJson = json.loads(jsonStr)
-        self.name = locationJson['locationName']
-        self.devices = []
-        devicesJson = locationJson['devices']
-        for deviceJson in devicesJson:
-            device = Device(json.dumps(deviceJson))
-            self.devices.append(device)
+        if jsonStr is not None:
+            locationJson = json.loads(jsonStr)
+            if 'locationName' in locationJson:
+                self.name = locationJson['locationName']
+            self.devices = []
+            if 'devices' in locationJson:
+                devicesJson = locationJson['devices']
+                for deviceJson in devicesJson:
+                    device = Device(json.dumps(deviceJson))
+                    if device.isValid():
+                        self.devices.append(device)
 
     def toString(self):
         result = "Location Name: " + self.name + "\n"
@@ -26,6 +30,10 @@ class Location:
             if self.devices[i] != other.devices[i]:
                 return False
         return True
+
+    def isValid(self):
+        return ((hasattr(self, "name") and (getattr(self, "name") is not None)) and
+                (hasattr(self, "devices") and (getattr(self, "devices") is not None)))
 
     @property
     def name(self):

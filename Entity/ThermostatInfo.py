@@ -3,28 +3,46 @@ import json
 class ThermostatInfo:
     def __init__(self, jsonStr=None, deviceId=None):
         self.time = None
+        self.deviceId = deviceId
         
-        if jsonStr != None:
+        if jsonStr is not None:
             thermostatInfoJson = json.loads(jsonStr)
-            self.equipmentStatus = thermostatInfoJson['equipmentStatus']
-            self.mode = thermostatInfoJson['mode']
-            self.modeLimit = thermostatInfoJson['modeLimit']
-            self.modeEmHeatAvailable = thermostatInfoJson['modeEmHeatAvailable']
-            self.fan = thermostatInfoJson['fan']
-            self.fanCirculate = thermostatInfoJson['fanCirculate']
-            self.fanCirculateSpeed = thermostatInfoJson['fanCirculateSpeed']
-            self.heatSetpoint = thermostatInfoJson['heatSetpoint']
-            self.coolSetpoint = thermostatInfoJson['coolSetpoint']
-            self.setpointDelta = thermostatInfoJson['setpointDelta']
-            self.setpointMinimum = thermostatInfoJson['setpointMinimum']
-            self.setpointMaximum = thermostatInfoJson['setpointMaximum']
-            self.tempIndoor = thermostatInfoJson['tempIndoor']
-            self.humIndoor = thermostatInfoJson['humIndoor']
-            self.tempOutdoor = thermostatInfoJson['tempOutdoor']
-            self.humOutdoor = thermostatInfoJson['humOutdoor']
-            self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
-            self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
-            self.deviceId = deviceId
+            if 'equipmentStatus' in thermostatInfoJson:
+                self.equipmentStatus = thermostatInfoJson['equipmentStatus']
+            if 'mode' in thermostatInfoJson:
+                self.mode = thermostatInfoJson['mode']
+            if 'modeLimit' in thermostatInfoJson:
+                self.modeLimit = thermostatInfoJson['modeLimit']
+            if 'modeEmHeatAvailable' in thermostatInfoJson:
+                self.modeEmHeatAvailable = thermostatInfoJson['modeEmHeatAvailable']
+            if 'fan' in thermostatInfoJson:
+                self.fan = thermostatInfoJson['fan']
+            if 'fanCirculate' in thermostatInfoJson:
+                self.fanCirculate = thermostatInfoJson['fanCirculate']
+            if 'fanCirculateSpeed' in thermostatInfoJson:
+                self.fanCirculateSpeed = thermostatInfoJson['fanCirculateSpeed']
+            if 'heatSetpoint' in thermostatInfoJson:
+                self.heatSetpoint = thermostatInfoJson['heatSetpoint']
+            if 'coolSetpoint' in thermostatInfoJson:
+                self.coolSetpoint = thermostatInfoJson['coolSetpoint']
+            if 'setpointDelta' in thermostatInfoJson:
+                self.setpointDelta = thermostatInfoJson['setpointDelta']
+            if 'setpointMinimum' in thermostatInfoJson:
+                self.setpointMinimum = thermostatInfoJson['setpointMinimum']
+            if 'setpointMaximum' in thermostatInfoJson:
+                self.setpointMaximum = thermostatInfoJson['setpointMaximum']
+            if 'tempIndoor' in thermostatInfoJson:
+                self.tempIndoor = thermostatInfoJson['tempIndoor']
+            if 'humIndoor' in thermostatInfoJson:
+                self.humIndoor = thermostatInfoJson['humIndoor']
+            if 'tempOutdoor' in thermostatInfoJson:
+                self.tempOutdoor = thermostatInfoJson['tempOutdoor']
+            if 'humOutdoor' in thermostatInfoJson:
+                self.humOutdoor = thermostatInfoJson['humOutdoor']
+            if 'scheduleEnabled' in thermostatInfoJson:
+                self.scheduleEnabled = thermostatInfoJson['scheduleEnabled']
+            if 'geofencingEnabled' in thermostatInfoJson:
+                self.geofencingEnabled = thermostatInfoJson['geofencingEnabled']
 
     def __eq__(self, other):
         if not type(self) == type(other):
@@ -89,6 +107,26 @@ class ThermostatInfo:
         result += "Schedule Enabled: " + str(self.scheduleEnabled) + "\n"
         result += "Geofencing Enabled: " + str(self.geofencingEnabled) + "\n"
         return result
+
+    def isValid(self):
+        return ((hasattr(self, "equipmentStatus") and (getattr(self, "equipmentStatus") is not None)) and
+        (hasattr(self, "mode") and (getattr(self, "mode") is not None))and
+        (hasattr(self, "modeLimit") and (getattr(self, "modeLimit") is not None))and
+        (hasattr(self, "modeEmHeatAvailable") and (getattr(self, "modeEmHeatAvailable") is not None))and
+        (hasattr(self, "fan") and (getattr(self, "fan") is not None))and
+        (hasattr(self, "fanCirculate") and (getattr(self, "fanCirculate") is not None))and
+        (hasattr(self, "fanCirculateSpeed") and (getattr(self, "fanCirculateSpeed") is not None))and
+        (hasattr(self, "heatSetpoint") and (getattr(self, "heatSetpoint") is not None))and
+        (hasattr(self, "coolSetpoint") and (getattr(self, "coolSetpoint") is not None))and
+        (hasattr(self, "setpointDelta") and (getattr(self, "setpointDelta") is not None))and
+        (hasattr(self, "setpointMinimum") and (getattr(self, "setpointMinimum") is not None))and
+        (hasattr(self, "setpointMaximum") and (getattr(self, "setpointMaximum") is not None))and
+        (hasattr(self, "tempIndoor") and (getattr(self, "tempIndoor") is not None))and
+        (hasattr(self, "humIndoor") and (getattr(self, "humIndoor") is not None))and
+        (hasattr(self, "tempOutdoor") and (getattr(self, "tempOutdoor") is not None))and
+        (hasattr(self, "humOutdoor") and (getattr(self, "humOutdoor") is not None))and
+        (hasattr(self, "scheduleEnabled") and (getattr(self, "scheduleEnabled") is not None))and
+        (hasattr(self, "geofencingEnabled") and (getattr(self, "geofencingEnabled") is not None)))
     
     @property
     def time(self):

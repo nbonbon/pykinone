@@ -48,3 +48,25 @@ def test_eq_are_not_equal():
 
     assert device1 != device2
 
+def test_EmptyJson():
+    testJson = []
+
+    device = Device(json.dumps(testJson))
+    assert device.isValid() == False
+
+def test_NoneJson():
+    testJson = None
+
+    device = Device(testJson)
+    assert device.isValid() == False
+
+def test_InvalidJson():
+    testJson = [
+        {
+            "nickname": "nicky"
+        }
+    ]
+
+    device = Device(json.dumps(testJson))
+    assert device.isValid() == False
+
