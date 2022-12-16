@@ -25,6 +25,7 @@ integratorEmail = ""
 apiKey = ""
 
 logger = logging.getLogger(__name__)
+logger.setLevel(verbosityLevel)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
 streamHandler = logging.StreamHandler()
@@ -39,6 +40,7 @@ logger.addHandler(streamHandler)
 logger.addHandler(fileHandler)
 
 def run():
+    logger.info("Starting...")
     authTimeout = 0
     loadConfiguration()
     dbManager = DbManager()
@@ -62,9 +64,10 @@ def run():
                 thermostatInfoJson = getThermostatInfo(authResponseJson, device.id)
                 thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), device.id)
                 dbManager.save(thermInfo)
-                logger.info(thermInfo.toString())
+                logger.debug(thermInfo.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
+    logger.info("Shutting down...")
     dbManager.close()
 
 def loadConfiguration():
@@ -76,13 +79,13 @@ def loadConfiguration():
         integratorEmail = cfg['integratorEmail']
         global apiKey
         apiKey = cfg['apiKey']
-        logger.debug("Configuration file loaded...")
+        logger.info("Configuration file loaded...")
     else:
         logger.error("Error loading config file")
     return
 
 def initializeRestApiWithIntegratorToken():
-    logger.debug("Initializing integration token with REST API...")
+    logger.info("Initializing integration token with REST API...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json'
@@ -91,27 +94,39 @@ def initializeRestApiWithIntegratorToken():
         'email': integratorEmail, 
         'integratorToken': integratorToken
     }
-    authResponse = requests.post(AUTH_TOKEN_ENDPOINT_URI_PATH, json=data, headers=headers)
-    return authResponse.json()
+    
+    try:
+        authResponse = requests.post(AUTH_TOKEN_ENDPOINT_URI_PATH, json=data, headers=headers)
+        return authResponse.json()
+    except requests.exceptions.RequestException as e:
+        logger.exception("Error: Could not authenticate with API.\n" + e)
 
 def getDevices(authResponseJson):
-    logger.debug("Getting devices...")
+    logger.info("Getting devices...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authResponseJson['accessToken']
     }
-    devicesResponse = requests.get(DEVICES_URI_PATH, headers=headers)
-    return devicesResponse.json()
+
+    try:
+        devicesResponse = requests.get(DEVICES_URI_PATH, headers=headers)
+        return devicesResponse.json()
+    except requests.exceptions.RequestException as e:
+        logger.exception("Error: Could not retrieve devices.\n" + e)
 
 def getThermostatInfo(authResponseJson, deviceId):
-    logger.debug("Getting device info...")
+    logger.info("Getting device info...")
     headers = {
         'x-api-key': apiKey,
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authResponseJson['accessToken']
     }
-    deviceInfoResponse = requests.get(DEVICES_URI_PATH + '/' + deviceId, headers=headers)
-    return deviceInfoResponse.json()
+
+    try:
+        deviceInfoResponse = requests.get(DEVICES_URI_PATH + '/' + deviceId, headers=headers)
+        return deviceInfoResponse.json()
+    except requests.exceptions.RequestException as e:
+        logger.exception("Error: Could not retrieve thermostat info.\n" + e)
 
 run()
