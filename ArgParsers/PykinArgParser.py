@@ -1,5 +1,6 @@
 import argparse
 import logging
+from constants import *
 
 DEFAULT_LOG_FILE = "pykinone.log"
 DEFAULT_CONFIG_FILE = "pykinone.conf"
@@ -9,17 +10,20 @@ class PykinArgParser:
         self.verbosityLevel = logging.INFO
         self.logFile = DEFAULT_LOG_FILE
         self.configFile = DEFAULT_CONFIG_FILE
+        self.databaseFile = DEFAULT_DATABASE_FILE
 
     def parseArgs(self, args):
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("-v", "--verbosity", help="Verbosity level. Default: 2, Options: [1-5]", type=int)
         self.parser.add_argument("-l", "--logfile", help="Log file path. Default: 'pykinone.log'")
         self.parser.add_argument("-c", "--config", help="Config file path. Default: 'pykinone.conf'")
+        self.parser.add_argument("-d", "--database", help="Database file path. Default: 'pykinone.db'")
 
         parsed_args = self.parser.parse_args(args)
         self.verbosityLevel = parsed_args.verbosity
         self.logFile = parsed_args.logfile
         self.configFile = parsed_args.config
+        self.databaseFile = parsed_args.database
     
     @property
     def verbosityLevel(self):
@@ -53,3 +57,14 @@ class PykinArgParser:
             self._configFile = DEFAULT_CONFIG_FILE
         else:
             self._configFile = value
+
+    @property
+    def databaseFile(self):
+        return self._databaseFile
+    
+    @databaseFile.setter
+    def databaseFile(self, value):
+        if value is None:
+            self._databaseFile = DEFAULT_DATABASE_FILE
+        else:
+            self._databaseFile = value

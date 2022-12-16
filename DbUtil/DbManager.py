@@ -14,8 +14,8 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
 class DbManager:
-    def __init__(self):
-        self.con = sqlite3.connect("pykinone.db")
+    def __init__(self, databaseFile):
+        self.con = sqlite3.connect(databaseFile)
         self.con.execute("PRAGMA foreign_keys = 1")
         self.curs = self.con.cursor()
         self.__initializeTables()

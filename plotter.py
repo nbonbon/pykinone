@@ -20,10 +20,11 @@ timezone = parser.timezone
 tempUnits = parser.temperatureUnits
 startDate = parser.startDate
 endDate = parser.endDate
+databaseFile = parser.databaseFile
 
 fig, ax = plt.subplots() 
 
-con = sqlite3.connect("pykinone.db")
+con = sqlite3.connect(databaseFile)
 
 queryString = """
     SELECT * FROM thermostat_info 

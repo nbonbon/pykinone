@@ -99,3 +99,19 @@ def test_parseArgs_daterange_withTimes():
 
     assert parser.startDate.isoformat(' ') == "2022-10-25 01:01:01"
     assert parser.endDate.isoformat(' ') ==  "2022-10-26 02:02:02"
+
+def test_parseArgs_databaseFile_shortOption():
+    args = ['-db', 'db.db']
+
+    parser = PlotterArgParser()
+    parser.parseArgs(args)
+
+    assert parser.databaseFile == "db.db"
+
+def test_parseArgs_databaseFile_longOption():
+    args = ['--database', 'db.db']
+
+    parser = PlotterArgParser()
+    parser.parseArgs(args)
+
+    assert parser.databaseFile == "db.db"

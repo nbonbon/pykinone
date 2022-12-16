@@ -57,3 +57,19 @@ def test_parseArgs_configFile_longOption():
     parser.parseArgs(args)
 
     assert parser.configFile == "/etc/config.conf"
+
+def test_parseArgs_databaseFile_shortOption():
+    args = ['-d', 'db.db']
+
+    parser = PykinArgParser()
+    parser.parseArgs(args)
+
+    assert parser.databaseFile == "db.db"
+
+def test_parseArgs_databaseFile_longOption():
+    args = ['--database', 'db.db']
+
+    parser = PykinArgParser()
+    parser.parseArgs(args)
+
+    assert parser.databaseFile == "db.db"
