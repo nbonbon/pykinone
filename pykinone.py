@@ -19,6 +19,7 @@ parser = PykinArgParser()
 parser.parseArgs(sys.argv[1:])
 verbosityLevel = parser.verbosityLevel
 logFile = parser.logFile
+configFile = parser.configFile
 
 integratorToken = ""
 integratorEmail = ""
@@ -74,7 +75,7 @@ def run():
     dbManager.close()
 
 def loadConfiguration():
-    cfg = config.Config("pykinone.conf")
+    cfg = config.Config(configFile)
     if cfg:
         global integratorToken
         integratorToken = cfg['integratorToken']
