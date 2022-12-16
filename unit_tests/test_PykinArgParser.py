@@ -41,3 +41,19 @@ def test_parseArgs_logFile_longOption():
     parser.parseArgs(args)
 
     assert parser.logFile == "/etc/logfile.log"
+
+def test_parseArgs_configFile_shortOption():
+    args = ['-c', '/etc/config.conf']
+
+    parser = PykinArgParser()
+    parser.parseArgs(args)
+
+    assert parser.configFile == "/etc/config.conf"
+
+def test_parseArgs_configFile_longOption():
+    args = ['--config', '/etc/config.conf']
+
+    parser = PykinArgParser()
+    parser.parseArgs(args)
+
+    assert parser.configFile == "/etc/config.conf"
