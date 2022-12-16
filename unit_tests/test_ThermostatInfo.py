@@ -115,3 +115,25 @@ def test_eq_are_not_equal():
     info1 = ThermostatInfo(json.dumps(testJson1), "0")
     info2 = ThermostatInfo(json.dumps(testJson2), "0")
     assert info1 != info2
+
+def test_EmptyJson():
+    testJson = []
+
+    info = ThermostatInfo(json.dumps(testJson))
+    assert info.isValid() == False
+
+def test_NoneJson():
+    testJson = None
+
+    info = ThermostatInfo(testJson)
+    assert info.isValid() == False
+
+def test_InvalidJson():
+    testJson = [
+        {
+            "nickname": "nicky"
+        }
+    ]
+
+    info = ThermostatInfo(json.dumps(testJson))
+    assert info.isValid() == False
