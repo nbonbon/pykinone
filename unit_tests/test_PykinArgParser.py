@@ -18,7 +18,15 @@ def test_parseArgs_verbosity_shortOption():
 
     assert parser.verbosityLevel == logging.CRITICAL
 
-def test_verbosity_tempF_longOption():
+def test_parseArgs_logFileverbosity():
+    args = ['-lv', '5']
+
+    parser = PykinArgParser()
+    parser.parseArgs(args)
+
+    assert parser.logfileVerbosity == logging.CRITICAL
+
+def test_verbosity_longOption():
     args = ['--verbosity', '4']
 
     parser = PykinArgParser()

@@ -11,10 +11,12 @@ class PykinArgParser:
         self.logFile = DEFAULT_LOG_FILE
         self.configFile = DEFAULT_CONFIG_FILE
         self.databaseFile = DEFAULT_DATABASE_FILE
+        self.logfileVerbosity = logging.WARNING
 
     def parseArgs(self, args):
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("-v", "--verbosity", help="Verbosity level. Default: 2, Options: [1-5]", type=int)
+        self.parser.add_argument("-lv", "--logverbosity", help="Verbosity level for the log file. Default: 3, Options: [1-5]", type=int)
         self.parser.add_argument("-l", "--logfile", help="Log file path. Default: 'pykinone.log'")
         self.parser.add_argument("-c", "--config", help="Config file path. Default: 'pykinone.conf'")
         self.parser.add_argument("-d", "--database", help="Database file path. Default: 'pykinone.db'")
@@ -24,6 +26,7 @@ class PykinArgParser:
         self.logFile = parsed_args.logfile
         self.configFile = parsed_args.config
         self.databaseFile = parsed_args.database
+        self.logfileVerbosity = parsed_args.logverbosity
     
     @property
     def verbosityLevel(self):
@@ -35,6 +38,17 @@ class PykinArgParser:
             self._verbosityLevel = logging.INFO
         else:
             self._verbosityLevel = (value * 10)
+
+    @property
+    def logfileVerbosity(self):
+        return self._logfileVerbosity
+    
+    @logfileVerbosity.setter
+    def logfileVerbosity(self, value):
+        if value is None:
+            self._logfileVerbosity = logging.WARNING
+        else:
+            self._logfileVerbosity = (value * 10)
 
     @property
     def logFile(self):
