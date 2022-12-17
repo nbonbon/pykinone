@@ -21,13 +21,14 @@ verbosityLevel = parser.verbosityLevel
 logFile = parser.logFile
 configFile = parser.configFile
 databaseFile = parser.databaseFile
+logfileVerbosity = parser.logfileVerbosity
 
 integratorToken = ""
 integratorEmail = ""
 apiKey = ""
 
 logger = logging.getLogger(__name__)
-logger.setLevel(verbosityLevel)
+logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
 streamHandler = logging.StreamHandler()
@@ -36,7 +37,7 @@ streamHandler.setLevel(verbosityLevel)
 
 fileHandler = logging.FileHandler(logFile)
 fileHandler.setFormatter(formatter)
-fileHandler.setLevel(logging.WARNING)
+fileHandler.setLevel(logfileVerbosity)
 
 logger.addHandler(streamHandler)
 logger.addHandler(fileHandler)
