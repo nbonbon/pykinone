@@ -4,10 +4,12 @@ import config
 import json
 import requests
 import logging
+import threading
 from DbUtil.DbManager import DbManager
 from DevicesResponseUtil import DevicesResponseUtil
 from Entity.ThermostatInfo import ThermostatInfo
 from ArgParsers.PykinArgParser import PykinArgParser
+from ble.SwitchbotMeterScanner import SwitchbotMeterScanner
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
@@ -47,6 +49,9 @@ def run():
     authTimeout = 0
     loadConfiguration()
     dbManager = DbManager(databaseFile)
+    sbScanner = SwitchbotMeterScanner()
+    temperatureMonitorThread = threading.Thread(target=sbScanner.scanForSwitchbotMeters)
+    temperatureMonitorThread.start()
     running = True
     intialized = False
     while running:
@@ -71,9 +76,14 @@ def run():
                     logger.debug(thermInfo.toString())
                 else:
                     logger.debug("Invalid thermostat info object.")
+
+        meters = sbScanner.getMeters()
+        for meter in meters:
+            logger.debug(meter.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
     logger.info("Shutting down...")
+    temperatureMonitorThread.join()
     dbManager.close()
 
 def loadConfiguration():
