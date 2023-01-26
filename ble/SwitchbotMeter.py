@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class SwitchbotMeter:
     def __init__(self, time, address, rssi, batteryLife, temperature, temperatureUnit, humidity):
         self.time_utc = time
@@ -9,9 +11,10 @@ class SwitchbotMeter:
         self.humidity = humidity
     
     def toString(self):
-        result = "Time: " + self.time_utc + "\n"
+        result = "\tTime: " + self.time_utc.isoformat(" ","seconds") + "\n"
         result += "\tAddress: " + self.address + "\n"
-        result += "\tRSSI: " + self.rssi + "\n"
+        result += "\tRSSI: " + str(self.rssi) + " dBm\n"
         result += "\tBattery: " + str(self.batteryLife) + "%\n"
-        result += "\tTemp: " + str(self.temperature) + "\u00B0" + self.temperatureUnit + "\n"
+        result += "\tTemp: " + str(self.temperature) + "\u00B0 " + self.temperatureUnit.upper() + "\n"
         result += "\tHumidity: " + str(self.humidity) + "%\n"
+        return result

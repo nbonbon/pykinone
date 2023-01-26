@@ -29,7 +29,7 @@ integratorToken = ""
 integratorEmail = ""
 apiKey = ""
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('MainLogger')
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s:%(name)s:%(message)s')
 
@@ -73,13 +73,13 @@ def run():
                 thermInfo = ThermostatInfo(json.dumps(thermostatInfoJson), device.id)
                 if thermInfo.isValid():
                     dbManager.save(thermInfo)
-                    logger.debug(thermInfo.toString())
+                    logger.debug("\n" + thermInfo.toString())
                 else:
                     logger.debug("Invalid thermostat info object.")
-
+        
         meters = sbScanner.getMeters()
-        for meter in meters:
-            logger.debug(meter.toString())
+        for meter in meters.values():
+            logger.debug('\n' + meter.toString())
         time.sleep(MINIMUM_QUERY_SPAN)
 
     logger.info("Shutting down...")
