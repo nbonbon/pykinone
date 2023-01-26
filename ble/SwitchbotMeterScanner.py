@@ -6,20 +6,21 @@ from bluepy.btle import DefaultDelegate, ScanEntry
 from ble.SwitchbotMeter import SwitchbotMeter
 from Entity.TemperatureUnit import TemperatureUnit
 
-METER_MACS = ['d2:51:27:12:fd:83','df:4a:2e:82:79:32'] # TODO: Take this in as a param
+ # TODO: Take this in as a param
 logger = logging.getLogger('MainLogger')
 
 class SwitchbotMeterScanner(DefaultDelegate):
     service_uuid = "cba20d00-224d-11e6-9fb8-0002a5d5c51b"
 
-    def __init__(self):
+    def __init__(self, macs):
         btle.DefaultDelegate.__init__(self)
         self._lock = threading.Lock()
         self.meters = {}
+        self.macs = macs
         self.TAG = self.__class__.__name__ + ":"
 
     def handleDiscovery(self, scanEntry, isNewDev, isNewData):
-        if scanEntry.addr not in METER_MACS:
+        if scanEntry.addr not in self.macs.values():
             return
 
         # self.is_switchbot(scanEntry) # TODO: Make work
@@ -46,15 +47,22 @@ class SwitchbotMeterScanner(DefaultDelegate):
                 utcTime = datetime.now(timezone.utc)
 
                 with self._lock:
-                    meter = SwitchbotMeter(utcTime, scanEntry.addr, scanEntry.rssi, battery, temperature, tempUnits, humidity)
+                    name = self.getDeviceName(scanEntry.addr)
+                    meter = SwitchbotMeter(utcTime, scanEntry.addr, scanEntry.rssi, battery, temperature, tempUnits, humidity, name)
                     if meter is not None:
-                        logger.debug(self.TAG + 'Updating meter: ' + scanEntry.addr)
+                        logger.debug(self.TAG + 'Updating meter: ' + name + ' [' + scanEntry.addr+ ']')
                         self.meters[scanEntry.addr] = meter 
                     else:
                         logger.debug(self.TAG + 'Meter was None!')
 
         if not scanEntry.scanData:
             logger.debug('(no data)')
+
+    def getDeviceName(self, mac):
+        if mac not in self.macs.values():
+            return "None"
+        else:
+             return list(self.macs.keys())[list(self.macs.values()).index(mac)]
 
     def is_switchbot(self, scanEntry):
         services = scanEntry.getValue(ScanEntry.COMPLETE_128B_SERVICES)

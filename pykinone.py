@@ -49,7 +49,7 @@ def run():
     authTimeout = 0
     loadConfiguration()
     dbManager = DbManager(databaseFile)
-    sbScanner = SwitchbotMeterScanner()
+    sbScanner = SwitchbotMeterScanner(macs)
     temperatureMonitorThread = threading.Thread(target=sbScanner.scanForSwitchbotMeters)
     temperatureMonitorThread.start()
     running = True
@@ -95,6 +95,8 @@ def loadConfiguration():
         integratorEmail = cfg['integratorEmail']
         global apiKey
         apiKey = cfg['apiKey']
+        global macs
+        macs = cfg['macs']
         logger.info("Configuration file loaded...")
     else:
         logger.error("Error loading config file")
