@@ -21,9 +21,6 @@ DEVICES_UPDATE_URI_PATH_SUFFIX = "msp"
 SECONDS_IN_ONE_MINUTE = 60
 MINIMUM_QUERY_SPAN = 3 * 60
 
-HEAT_MIN_THRESHOLD = 1
-HEAT_MAX_THRESHOLD = 2
-
 parser = PykinArgParser()
 parser.parseArgs(sys.argv[1:])
 verbosityLevel = parser.verbosityLevel
@@ -105,10 +102,10 @@ def forceSystemToFollowMeter(authResponseJson, deviceId, thermInfo, meter):
     meterTempC = meter.temperature if meter.temperatureUnit == TemperatureUnit.Celsius else TempUtil.fahrenheitToCelsius(meter.temperature)
 
     if thermInfo.mode == Mode.Off:
-        if (meterTempC < (thermInfo.heatSetpoint - HEAT_MIN_THRESHOLD)):
+        if (meterTempC < (thermInfo.heatSetpoint - heatMinThreshold)):
             setSystemMode(authResponseJson, deviceId, thermInfo, Mode.Heat)
     elif thermInfo.mode == Mode.Heat:
-        if (meterTempC > (thermInfo.heatSetpoint + HEAT_MAX_THRESHOLD)):
+        if (meterTempC > (thermInfo.heatSetpoint + heatMaxThreshold)):
             setSystemMode(authResponseJson, deviceId, thermInfo, Mode.Off)
 
 def loadConfiguration():
@@ -126,6 +123,10 @@ def loadConfiguration():
         meterToFollow = cfg['meterToFollow']
         global deviceIdOfMeter
         deviceIdOfMeter = cfg['deviceIdOfMeter']
+        global heatMinThreshold
+        heatMinThreshold = cfg['heatMinThreshold']
+        global heatMaxThreshold
+        heatMaxThreshold = cfg['heatMaxThreshold']
         logger.info("Configuration file loaded...")
     else:
         logger.error("Error loading config file")
