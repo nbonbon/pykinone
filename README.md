@@ -13,6 +13,15 @@ The application currently does **not** support the Daikin Open API functions for
 ## Download Dependencies
 Execute `pip3 install -r requirements.txt` to install all dependencies.
 
+### pipreqs
+pipreqs is used to compile dependencies into the requirements.txt.
+
+In the pykinone directory execute: `pipreqs --force`
+
+The above will overwrite the existing requirements.txt.
+
+https://github.com/bndr/pipreqs
+
 ## Data Collection
 
 ### Setup
