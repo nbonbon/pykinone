@@ -1,5 +1,6 @@
 import threading
 import logging
+import traceback
 from datetime import datetime, timezone
 from bluepy import btle 
 from bluepy.btle import DefaultDelegate, ScanEntry
@@ -86,8 +87,11 @@ class SwitchbotMeterScanner(DefaultDelegate):
 
     def scanForSwitchbotMeters(self):
         while True:
-            scanner = btle.Scanner().withDelegate(self)
-            scanner.scan(10)
+            try:
+                scanner = btle.Scanner().withDelegate(self)
+                scanner.scan(10)
+            except:
+                logging.error(traceback.format_exc())
 
     def getMeters(self):
         with self._lock:

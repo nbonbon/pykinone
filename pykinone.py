@@ -10,12 +10,19 @@ from DevicesResponseUtil import DevicesResponseUtil
 from Entity.ThermostatInfo import ThermostatInfo
 from ArgParsers.PykinArgParser import PykinArgParser
 from ble.SwitchbotMeterScanner import SwitchbotMeterScanner
+from Entity.Mode import Mode
+from Entity.TemperatureUnit import TemperatureUnit
+from Util.TempUtil import TempUtil
 
 DAIKIN_ONE_BASE_URI = "https://integrator-api.daikinskyport.com"
 AUTH_TOKEN_ENDPOINT_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/token"
 DEVICES_URI_PATH = DAIKIN_ONE_BASE_URI + "/v1/devices"
+DEVICES_UPDATE_URI_PATH_SUFFIX = "msp"
 SECONDS_IN_ONE_MINUTE = 60
 MINIMUM_QUERY_SPAN = 3 * 60
+
+HEAT_MIN_THRESHOLD = 1
+HEAT_MAX_THRESHOLD = 2
 
 parser = PykinArgParser()
 parser.parseArgs(sys.argv[1:])
@@ -54,6 +61,7 @@ def run():
     temperatureMonitorThread.start()
     running = True
     intialized = False
+    latestThermInfoOfFollowDevice = None
     while running:
         now = time.time()
         if now > authTimeout:
@@ -74,17 +82,34 @@ def run():
                 if thermInfo.isValid():
                     dbManager.save(thermInfo)
                     logger.debug("\n" + thermInfo.toString())
+
+                    if deviceIdOfMeter == device.id:
+                        latestThermInfoOfFollowDevice = thermInfo
                 else:
                     logger.debug("Invalid thermostat info object.")
         
         meters = sbScanner.getMeters()
+
         for meter in meters.values():
             logger.debug('\n' + meter.toString())
+            if meter.name == meterToFollow:
+                forceSystemToFollowMeter(authResponseJson, deviceIdOfMeter, latestThermInfoOfFollowDevice, meter)
+        
         time.sleep(MINIMUM_QUERY_SPAN)
 
     logger.info("Shutting down...")
     temperatureMonitorThread.join()
     dbManager.close()
+
+def forceSystemToFollowMeter(authResponseJson, deviceId, thermInfo, meter):
+    meterTempC = meter.temperature if meter.temperatureUnit == TemperatureUnit.Celsius else TempUtil.fahrenheitToCelsius(meter.temperature)
+
+    if thermInfo.mode == Mode.Off:
+        if (meterTempC < (thermInfo.heatSetpoint - HEAT_MIN_THRESHOLD)):
+            setSystemMode(authResponseJson, deviceId, thermInfo, Mode.Heat)
+    elif thermInfo.mode == Mode.Heat:
+        if (meterTempC > (thermInfo.heatSetpoint + HEAT_MAX_THRESHOLD)):
+            setSystemMode(authResponseJson, deviceId, thermInfo, Mode.Off)
 
 def loadConfiguration():
     cfg = config.Config(configFile)
@@ -97,6 +122,10 @@ def loadConfiguration():
         apiKey = cfg['apiKey']
         global macs
         macs = cfg['macs']
+        global meterToFollow
+        meterToFollow = cfg['meterToFollow']
+        global deviceIdOfMeter
+        deviceIdOfMeter = cfg['deviceIdOfMeter']
         logger.info("Configuration file loaded...")
     else:
         logger.error("Error loading config file")
@@ -146,5 +175,26 @@ def getThermostatInfo(authResponseJson, deviceId):
         return deviceInfoResponse.json()
     except requests.exceptions.RequestException as e:
         logger.exception("Error: Could not retrieve thermostat info.\n" + e)
+
+def setSystemMode(authResponseJson, deviceId, thermInfo, mode):
+    logger.info("Changing system mode to: " + repr(mode))
+    headers = {
+        'x-api-key': apiKey,
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authResponseJson['accessToken']
+    }
+
+    data = {
+        'mode': mode,
+        'heatSetpoint': thermInfo.heatSetpoint,
+        'coolSetpoint': thermInfo.coolSetpoint
+    }
+
+    try:
+        deviceModeUpdateResponse = requests.put(DEVICES_URI_PATH + '/' + deviceId + '/' + DEVICES_UPDATE_URI_PATH_SUFFIX, headers=headers, json=data)
+        return deviceModeUpdateResponse.json()
+    except requests.exceptions.RequestException as e:
+        logger.exception("Error: Could not change thermostat mode.\n" + e)
+
 
 run()
